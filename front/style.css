@@ -1,0 +1,398 @@
+header{
+    text-align: left;
+}
+body{
+    background-color: #0b1020;
+    text-align: center;
+    overflow: hidden;
+}
+
+.version{
+    font-family: "JetBrains Mono", monospace;
+    font-size: small; /*muda o tamanho da versao*/
+    color: blueviolet;
+}
+
+h1{
+    color: white;
+    text-shadow: 0px 0px 15px rgba(77, 166, 255, 0.7);
+}
+
+.logo{
+    font-family: "Cinzel", serif; /*fonte pro titulo*/
+    font-size: 70px;
+    color: #4da6ff;
+}
+
+
+/*botões*/
+
+
+.button{
+    background-color: blue;
+    color:white;
+    padding: 12px 24px; /*faz o quadradão em volta*/
+    border-radius: 8px; /*arredonda os cantos*/
+    text-decoration: none; /*seila, tava no gpt*/
+    display: inline-block; /*faz o button:hover funcionar (serve pra animações no botão)*/
+    transition: 0.3s; /*pro botao nao tomar susto*/
+}
+.button:hover{
+    transform: scale(1.1); /*animação quando passa o mouse no botão*/
+    text-shadow: 0px 0px 15px rgba(77, 166, 255, 0.7);
+}
+
+/*botões menu*/
+
+
+.button-menu{
+    background-color: transparent;
+    width: min(300px, 80vw);
+}
+.menu-buttons{
+    display:flex;
+    flex-direction: column;
+    align-items: center; /*alinhamento*/
+    gap: 30px; /*cria espaço entre os botoes, assim nao precisa do <br>*/
+    margin-top: 25vh; /*empurra os botões pra baixo*/
+    font-size: clamp(24px, 3vw, 42px);
+}
+
+/*botões config*/
+
+.button-config{
+    background-color: transparent;
+    width: 300px;
+}
+
+.config-buttons{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    margin-top: 25vh;
+    font-size: clamp(24px, 3vw, 42px);
+}
+
+#game-area{}
+
+#player{
+    width: 20px;
+    height: 30px;
+    background-color: red;
+    position: absolute;
+    z-index: 2;
+}
+
+/*paredes*/
+
+#wall-left{
+    width: 40px;
+    height: 100vh;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#wall-right-top{
+    width: 40px;
+    height: 250px;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+#wall-right-bottom{
+    width: 40px;
+    height: 250px;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+#door{
+    width: 60px;
+    height: 90px;
+    background-color: purple;
+    position: absolute;
+    left: 600px;
+    top: 647px;
+    z-index: 1;
+    border-radius: 20px 20px 0px 0px; /*ordem: top-left, top-right, bottom-right, bottom-left*/
+}
+
+/*Mensagem quando interação se torna possível*/
+
+#interaction-popup{
+    display: none;
+    position: absolute;
+    left: 595px;
+    top: 607px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 8px 12px;
+    border-radius: 8px;
+    z-index: 3;
+}
+
+/*bloco da área da porta*/
+
+#area2-block{
+    width: 200px;
+    height: 80px;
+    background-color: cyan;
+    position: absolute;
+    left: 400px;
+    top: 300px;
+}
+
+#area2-wall-left-top{
+    width: 40px;
+    height: 250px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#area2-wall-left-bottom{
+    width: 40px;
+    height: 250px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+#area3-wall-left-top{
+    width: 40px;
+    height: 250px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#area3-wall-left-bottom{
+    width: 40px;
+    height: 250px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+#area3-wall-right-top{
+    width: 40px;
+    height: 160px;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+#area3-wall-right-middle{
+    width: 40px;
+    height: 180px;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    top: 300px;
+}
+
+#area3-wall-right-bottom{
+    width: 40px;
+    height: 120px;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+/*chão padrao da mesma altura em todas as telas que tem essa div*/
+#floor{
+    width: 100vw;
+    height: 40px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+/*plataformas suspensas na area 3*/
+#platform-1{
+    width: 140px; /*largura*/
+    height: 15px; /*altura*/
+    background-color: white;
+    position: absolute;
+    left: 300px; /*quanto menor mais perto*/
+    top: 550px; /*quanto menor mais perto*/
+}
+
+#platform-2{
+    width: 40px;
+    height: 50px;
+    background-color: white;
+    position: absolute;
+    left: 550px;
+    top: 400px;
+}
+
+#platform-3{
+    width: 40px;
+    height: 50px;
+    background-color: white;
+    position: absolute;
+    left: 730px;
+    top: 300px;
+}
+
+#platform-4{
+    width: 500px;
+    height: 50px;
+    background-color: white;
+    position: absolute;
+    left: 900px;
+    top: 300px;
+}
+
+/*plataforma de tijegla*/
+#platform-t{
+    width: 220px;
+    height: 40px;
+    background-color: white;
+    position: absolute;
+    left: 500px;
+    top: 220px;
+    border-radius: 50px 50px 15px 15px;
+}
+
+/*plataforma inclinada*/
+#platform-ramp{
+    width: 200px;
+    height: 30px;
+    background-color: white;
+    position: absolute;
+    left: 400px;
+    top: 300px;
+
+    transform: rotate(-20deg);
+}
+
+#floor-left{
+    width: 45vw;
+    height: 40px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+#floor-right{
+    width: 45vw;
+    height: 40px;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+/*fragmento de memoria*/
+#memory-fragment{
+    width: 25px;
+    height: 25px;
+    background-color: cyan;
+    position: absolute;
+    left: 600px;
+    top: 500px;
+    border-radius: 50%;
+}
+
+#memory-popup{
+    display: none;
+    position: absolute;
+    top: 40px;
+    right: 20px;
+
+    color: white;
+    background-color: rgba(0, 0, 0, 0.6);
+
+    padding: 10px 14px;
+    border-radius: 8px;
+
+    z-index: 5;
+
+    opacity: 0;
+}
+
+@keyframes popupMemory{
+
+    0%{
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    20%{
+        opacity: 1;
+        transform: translateY(0px);
+    }
+
+    80%{
+        opacity: 1;
+        transform: translateY(-10px);
+    }
+
+    100%{
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+}
+
+#damage-obstacle{
+    width: 80px;
+    height: 30px;
+    background-color: crimson;
+    position: absolute;
+    left: 400px;
+    top: 560px;
+}
+
+#damage-popup{
+    display: none;
+    position: absolute;
+    top: 80px;
+    right: 20px;
+
+    color: white;
+    background-color: rgba(120, 0, 0, 0.7);
+
+    padding: 10px 14px;
+    border-radius: 8px;
+
+    z-index: 5;
+}
+
+/*jato de vento*/
+#wind-zone{
+    width: 90px;
+    height: 260px;
+    background-color: rgba(120, 220, 255, 0.35);
+    position: absolute;
+    right: 180px;
+    bottom: 40px;
+    border-radius: 40px 40px 0px 0px;
+}
+
+/*plataforma que cai*/
+#falling-platform{
+    width: 160px;
+    height: 25px;
+    background-color: orange;
+    position: absolute;
+    left: 350px;
+    top: 420px;
+}
