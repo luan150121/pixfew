@@ -51,6 +51,8 @@ let jumpForce = -20;
 //desbugar pulo
 let isGrounded = false;
 let jumpPressed = false;
+let coyoteTime = 0;
+let coyoteTimeMax = 8;
 
 let fallingPlatformY = 420;
 let fallingPlatformFalling = false;
@@ -476,6 +478,7 @@ document.addEventListener("keydown", function(event){
         velocityY = jumpForce;
         isGrounded = false;
         jumpPressed = true;
+        coyoteTime = 0;
     }
 
     //abre o menu de pausa ao apertar ESC
@@ -577,11 +580,16 @@ function gameLoop(){
 
         if(velocityY > 0){
             isGrounded = true;
+            coyoteTime = coyoteTimeMax;
         }
 
         velocityY = 0;
     }else{
         isGrounded = false;
+
+        if(coyoteTime > 0){
+            coyoteTime--;
+        }
     }
 
     /*if(keys.s){
