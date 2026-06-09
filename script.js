@@ -588,7 +588,7 @@ function gameLoop(currentTime){
     }
 
     if(checkWallCollision(verticalPlayerBox)){
-        y -= velocityY;
+        y -= velocityY * deltaTime;
 
         if(velocityY > 0){
             isGrounded = true;
