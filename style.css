@@ -212,6 +212,42 @@ h1{
     bottom: 0;
 }
 
+#area4-wall-left-top{
+    width: 40px;
+    height: 250px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#area4-wall-left-bottom{
+    width: 40px;
+    height: 250px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+#area5-wall-left-top{
+    width: 40px;
+    height: 250px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#area5-wall-left-bottom{
+    width: 40px;
+    height: 250px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
 /*chão padrao da mesma altura em todas as telas que tem essa div*/
 #floor{
     width: 100vw;
@@ -396,5 +432,3 @@ h1{
     left: 350px;
     top: 420px;
 }
-
-/* teste casa*/

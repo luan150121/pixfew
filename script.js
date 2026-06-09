@@ -8,6 +8,10 @@ const exitAreaElement = document.getElementById("wall-right-top");
 const leftExitElement = document.getElementById("area2-wall-left-top");
 const area3LeftElement = document.getElementById("area3-wall-left-top");
 const area3RightElement = document.getElementById("area3-wall-right-top");
+const area4LeftElement = document.getElementById("area4-wall-left-top");
+const area4RightElement = document.getElementById("area4-wall-left-bottom");
+const area5LeftElement = document.getElementById("area5-wall-left-top");
+const area5RightElement = document.getElementById("area5-wall-left-bottom");
 
 const floorElement = document.getElementById("floor");
 const floorLeftElement = document.getElementById("floor-left");
@@ -168,6 +172,43 @@ const area3RightWalls = [
     }
 ];
 
+const area4Walls = [
+    {
+        x: 0,
+        y: 0,
+        width: 40,
+        height: 250
+    },
+    {
+        x: 0,
+        y: window.innerHeight - 250,
+        width: 40,
+        height: 250
+    }
+];
+
+const area5Walls = [
+    {
+        x: 0,
+        y: 0,
+        width: 40,
+        height: 250
+    },
+    {
+        x: 0,
+        y: window.innerHeight - 250,
+        width: 40,
+        height: 250
+    }
+];
+
+const area4LeftExitArea = {
+    x: 0,
+    y: 250,
+    width: 40,
+    height: window.innerHeight - 500
+};
+
 //hitbox plataformas suspensas
 const platforms = [
     {
@@ -255,6 +296,13 @@ const area3RightBottomExitArea = {
     height: window.innerHeight - 600
 };
 
+const area5LeftExitArea = {
+    x: 0,
+    y: 250,
+    width: 40,
+    height: window.innerHeight - 500
+};
+
 //saída para baixo da área 5
 const downExitArea = {
     x: window.innerWidth * 0.45,
@@ -333,6 +381,19 @@ function checkWallCollision(playerBox){
         }
     }
 
+    if(area4LeftElement && checkColision(playerBox, area4LeftExitArea)){
+    localStorage.setItem("spawnPoint", "fromRight");
+    window.location.href = "area3.html";
+    return false;
+    }
+
+    //permite sair pela passagem da área 5 antes de bloquear na parede
+    if(area5LeftElement && checkColision(playerBox, area5LeftExitArea)){
+        localStorage.setItem("spawnPoint", "fromRight");
+        window.location.href = "area3.html";
+        return false;
+    }
+
     //permite sair pela passagem da área 2 antes de bloquear na parede
     if(leftExitElement && checkColision(playerBox, leftExitArea)){
         localStorage.setItem("spawnPoint", "fromRight");
@@ -363,6 +424,14 @@ function checkWallCollision(playerBox){
         return true;
     }
 
+    if(area4LeftElement && area4Walls.some(wall => checkColision(playerBox, wall))){
+        return true;
+    }
+
+    if(area5LeftElement && area5Walls.some(wall => checkColision(playerBox, wall))){
+        return true;
+    }
+
     if(floorElement && checkColision(playerBox, floor)){
         return true;
     }
@@ -381,6 +450,14 @@ function checkWallCollision(playerBox){
     }
 
     if(fallingPlatformElement && checkColision(playerBox, fallingPlatform)){
+    return true;
+    }
+
+    if(area4LeftElement && area4Walls.some(wall => checkColision(playerBox, wall))){
+    return true;
+    }
+
+    if(area5LeftElement && area5Walls.some(wall => checkColision(playerBox, wall))){
     return true;
     }
 
