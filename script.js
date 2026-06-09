@@ -53,6 +53,7 @@ let isGrounded = false;
 let jumpPressed = false;
 let coyoteTime = 0;
 let coyoteTimeMax = 8;
+let lastTime = 0;
 
 let fallingPlatformY = 420;
 let fallingPlatformFalling = false;
@@ -508,11 +509,22 @@ document.addEventListener("keyup", function(event){
 });
 
 //loop principal do jogo
-function gameLoop(){
+function gameLoop(currentTime){
+
+    if(!lastTime){
+        lastTime = currentTime;
+    }
+
+    let deltaTime = (currentTime - lastTime) / 16.67;
+    lastTime = currentTime;
+
+    if(deltaTime > 2){
+        deltaTime = 2;
+    }
 
     //movimentação horizontal
     if(keys.d){
-        x += speed;
+        x += speed * deltaTime;
 
         const playerBox = {
             x: x,
@@ -522,12 +534,12 @@ function gameLoop(){
         };
 
         if(checkWallCollision(playerBox)){
-            x -= speed;
+            x -= speed * deltaTime;
         }
     }
 
     if(keys.a){
-        x -= speed;
+        x -= speed * deltaTime;
 
         const playerBox = {
             x: x,
@@ -537,13 +549,13 @@ function gameLoop(){
         };
 
         if(checkWallCollision(playerBox)){
-            x += speed;
+            x += speed * deltaTime;
         }
     }
 
     //movimentação vertical
-    velocityY += gravity;
-    y += velocityY;
+    velocityY += gravity * deltaTime;
+    y += velocityY * deltaTime;
 
     const verticalPlayerBox = {
         x: x,
@@ -565,7 +577,7 @@ function gameLoop(){
     }
 
     if(fallingPlatformFalling){
-        fallingPlatformY += 4;
+        fallingPlatformY += 4 * deltaTime;
         fallingPlatformElement.style.top = fallingPlatformY + "px";
         }
 
@@ -722,5 +734,5 @@ function gameLoop(){
     requestAnimationFrame(gameLoop);
 }
 
-//inicia o loop do jogo
-gameLoop();
+    //inicia o loop do jogo
+    requestAnimationFrame(gameLoop);
