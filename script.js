@@ -70,6 +70,22 @@ let fallingPlatformTimerStarted = false;
 //sistema de salas novo
 let currentRoom = 1;
 
+const rooms = {
+    1: {
+        spawnX: window.innerWidth - 120,
+        spawnY: window.innerHeight - 100,
+        showDoor: true,
+        showBlock: false
+    },
+
+    2: {
+        spawnX: 80,
+        spawnY: window.innerHeight - 100,
+        showDoor: false,
+        showBlock: true
+    }
+};
+
 //define onde o player aparece ao trocar de área
 const spawnPoint = localStorage.getItem("spawnPoint");
 
@@ -422,8 +438,12 @@ function checkWallCollision(playerBox){
         return false;
     }
 
-    if(wallLeftElement && walls.some(wall => checkColision(playerBox, wall))){
-        return true;
+    if(currentRoom === 1 && wallLeftElement && walls.some(wall => checkColision(playerBox, wall))){
+    return true;
+    }
+
+    if(currentRoom === 2 && area2Walls.some(wall => checkColision(playerBox, wall))){
+    return true;
     }
 
     if(leftExitElement && area2Walls.some(wall => checkColision(playerBox, wall))){
@@ -566,6 +586,7 @@ function gameLoop(currentTime){
         }
     }
 
+
     //movimentação horizontal
     if(keys.d){
         x += speed * deltaTime;
@@ -652,36 +673,6 @@ function gameLoop(currentTime){
         }
     }
 
-    /*if(keys.s){
-        y += speed;
-
-        const playerBox = {
-            x: x,
-            y: y,
-            width: hitbox.width,
-            height: hitbox.height
-        };
-
-        if(checkWallCollision(playerBox)){
-            y -= speed;
-        }
-    }*/
-
-    /*if(keys.w){
-        y -= speed;
-
-        const playerBox = {
-            x: x,
-            y: y,
-            width: hitbox.width,
-            height: hitbox.height
-        };
-
-        if(checkWallCollision(playerBox)){
-            y += speed;
-        }
-    }*/
-
     //impede o player de sair pela esquerda
     if(x < 0){
         x = 0;
@@ -713,7 +704,7 @@ function gameLoop(currentTime){
     };
 
     //ativa interação com a porta somente se a porta existir na página
-    if(doorElement && checkColision(playerBox, door)){
+    if(currentRoom === 1 && doorElement && checkColision(playerBox, door)){
         canEnterDoor = true;
 
         if(popup){
@@ -792,42 +783,28 @@ function gameLoop(currentTime){
     requestAnimationFrame(gameLoop);
 }
 
-
+//função pras salas ficarem no js inves de ter varios html
 function loadRoom(){
 
+    const room = rooms[currentRoom];
     const block = document.getElementById("area2-block");
 
-    if(currentRoom === 1){
+    x = room.spawnX;
+    y = room.spawnY;
 
-        x = window.innerWidth - 120;
-        y = window.innerHeight - 100;
-
-        if(doorElement){
-            doorElement.style.display = "block";
-        }
-
-        if(block){
-            block.style.display = "none";
-        }
+    if(doorElement){
+        doorElement.style.display =
+            room.showDoor ? "block" : "none";
     }
 
-        if(currentRoom === 2){
+    if(block){
+        block.style.display =
+            room.showBlock ? "block" : "none";
+    }
 
-            x = 80;
-            y = window.innerHeight - 100;
-
-            if(doorElement){
-                doorElement.style.display = "none";
-            }
-
-            if(popup){
-                popup.style.display = "none";
-            }
-
-            if(block){
-                block.style.display = "block";
-            }
-        }
+    if(!room.showDoor && popup){
+        popup.style.display = "none";
+    }
 }
 
 //inicia o loop do jogo
