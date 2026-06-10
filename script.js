@@ -48,6 +48,14 @@ let velocityY = 0;
 let gravity = 0.5;
 let jumpForce = -20;
 
+//dash
+let facingDirection = 1;
+let isDashing = false;
+let dashTime = 0;
+let dashDuration = 10;
+let dashSpeed = 10;
+let dashCooldown = false;
+
 //desbugar pulo
 let isGrounded = false;
 let jumpPressed = false;
@@ -470,6 +478,11 @@ function checkWallCollision(playerBox){
 //quando uma tecla é pressionada
 document.addEventListener("keydown", function(event){
 
+    if(event.key === "Shift" && !isDashing && !dashCooldown){
+    isDashing = true;
+    dashTime = dashDuration;
+    dashCooldown = true;
+    }
     //ativa a tecla pressionada
     if(event.key in keys){
         keys[event.key] = true;
@@ -522,9 +535,37 @@ function gameLoop(currentTime){
         deltaTime = 2;
     }
 
+    if(isDashing){
+        x += facingDirection * dashSpeed * deltaTime;
+
+        const dashPlayerBox = {
+            x: x,
+            y: y,
+            width: hitbox.width,
+            height: hitbox.height
+        };
+
+        if(checkWallCollision(dashPlayerBox)){
+            x -= facingDirection * dashSpeed * deltaTime;
+            isDashing = false;
+        }
+
+        dashTime -= deltaTime;
+
+        if(dashTime <= 0){
+            isDashing = false;
+
+            setTimeout(function(){
+                dashCooldown = false;
+            }, 500);
+        }
+    }
+
     //movimentação horizontal
     if(keys.d){
         x += speed * deltaTime;
+
+        facingDirection = 1;
 
         const playerBox = {
             x: x,
@@ -540,6 +581,8 @@ function gameLoop(currentTime){
 
     if(keys.a){
         x -= speed * deltaTime;
+
+        facingDirection = -1;
 
         const playerBox = {
             x: x,
