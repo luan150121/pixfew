@@ -11,3 +11,5 @@
 - modulos equipaveis
 - sistema de reparo
 - melhorias permanentes 
+
+- teste da branch nova
