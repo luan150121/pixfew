@@ -67,6 +67,9 @@ let fallingPlatformY = 420;
 let fallingPlatformFalling = false;
 let fallingPlatformTimerStarted = false;
 
+//sistema de salas novo
+let currentRoom = 1;
+
 //define onde o player aparece ao trocar de área
 const spawnPoint = localStorage.getItem("spawnPoint");
 
@@ -503,7 +506,9 @@ document.addEventListener("keydown", function(event){
 
     //entra na porta se o player estiver nela
     if(event.key === "Enter" && canEnterDoor){
-        window.location.href = "area2.html";
+        currentRoom = 2;
+
+        loadRoom();
     }
 });
 
@@ -769,6 +774,16 @@ function gameLoop(currentTime){
         }
     }
 
+    if(currentRoom === 2){
+
+    if(x <= 40){
+
+        currentRoom = 1;
+
+        loadRoom();
+        }
+    }
+
     //atualiza a posição do player na tela
     player.style.left = x + "px";
     player.style.top = y + "px";
@@ -777,5 +792,43 @@ function gameLoop(currentTime){
     requestAnimationFrame(gameLoop);
 }
 
-    //inicia o loop do jogo
-    requestAnimationFrame(gameLoop);
+
+function loadRoom(){
+
+    const block = document.getElementById("area2-block");
+
+    if(currentRoom === 1){
+
+        x = window.innerWidth - 120;
+        y = window.innerHeight - 100;
+
+        if(doorElement){
+            doorElement.style.display = "block";
+        }
+
+        if(block){
+            block.style.display = "none";
+        }
+    }
+
+        if(currentRoom === 2){
+
+            x = 80;
+            y = window.innerHeight - 100;
+
+            if(doorElement){
+                doorElement.style.display = "none";
+            }
+
+            if(popup){
+                popup.style.display = "none";
+            }
+
+            if(block){
+                block.style.display = "block";
+            }
+        }
+}
+
+//inicia o loop do jogo
+requestAnimationFrame(gameLoop);
