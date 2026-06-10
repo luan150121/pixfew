@@ -422,8 +422,12 @@ function checkWallCollision(playerBox){
         return false;
     }
 
-    if(wallLeftElement && walls.some(wall => checkColision(playerBox, wall))){
-        return true;
+    if(currentRoom === 1 && wallLeftElement && walls.some(wall => checkColision(playerBox, wall))){
+    return true;
+    }
+
+    if(currentRoom === 2 && area2Walls.some(wall => checkColision(playerBox, wall))){
+    return true;
     }
 
     if(leftExitElement && area2Walls.some(wall => checkColision(playerBox, wall))){
@@ -564,6 +568,11 @@ function gameLoop(currentTime){
                 dashCooldown = false;
             }, 500);
         }
+    }
+
+    if(currentRoom === 2 && x <= 40){
+    currentRoom = 1;
+    loadRoom();
     }
 
     //movimentação horizontal
@@ -713,7 +722,7 @@ function gameLoop(currentTime){
     };
 
     //ativa interação com a porta somente se a porta existir na página
-    if(doorElement && checkColision(playerBox, door)){
+    if(currentRoom === 1 && doorElement && checkColision(playerBox, door)){
         canEnterDoor = true;
 
         if(popup){
@@ -792,7 +801,7 @@ function gameLoop(currentTime){
     requestAnimationFrame(gameLoop);
 }
 
-
+//função pras salas ficarem no js inves de ter varios html
 function loadRoom(){
 
     const block = document.getElementById("area2-block");
