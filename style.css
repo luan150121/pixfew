@@ -26,8 +26,6 @@ h1{
 
 
 /*botões*/
-
-
 .button{
     background-color: blue;
     color:white;
@@ -43,8 +41,6 @@ h1{
 }
 
 /*botões menu*/
-
-
 .button-menu{
     background-color: transparent;
     width: min(300px, 80vw);
@@ -59,7 +55,6 @@ h1{
 }
 
 /*botões config*/
-
 .button-config{
     background-color: transparent;
     width: 300px;
@@ -85,7 +80,6 @@ h1{
 }
 
 /*paredes*/
-
 #wall-left{
     width: 40px;
     height: 100vh;
@@ -118,19 +112,18 @@ h1{
     height: 90px;
     background-color: purple;
     position: absolute;
-    left: 600px;
-    top: 647px;
+    left: calc(50vw - 30px);
+    bottom: 40px;
     z-index: 1;
     border-radius: 20px 20px 0px 0px; /*ordem: top-left, top-right, bottom-right, bottom-left*/
 }
 
 /*Mensagem quando interação se torna possível*/
-
 #interaction-popup{
     display: none;
     position: absolute;
-    left: 595px;
-    top: 607px;
+    left: calc(50vw - 35px);
+    bottom: 135px;
     color: white;
     background-color: rgba(0, 0, 0, 0.6);
     padding: 8px 12px;
@@ -139,7 +132,6 @@ h1{
 }
 
 /*bloco da área da porta*/
-
 #area2-block{
     width: 200px;
     height: 80px;
@@ -176,6 +168,7 @@ h1{
     position: absolute;
     left: 0;
     top: 0;
+    display: none;
 }
 
 #area3-wall-left-bottom{
@@ -185,6 +178,7 @@ h1{
     position: absolute;
     left: 0;
     bottom: 0;
+    display: none;
 }
 
 #area3-wall-right-top{
@@ -194,6 +188,7 @@ h1{
     position: absolute;
     right: 0;
     top: 0;
+    display: none;
 }
 
 #area3-wall-right-middle{
@@ -203,6 +198,7 @@ h1{
     position: absolute;
     right: 0;
     top: 300px;
+    display: none;
 }
 
 #area3-wall-right-bottom{
@@ -212,6 +208,7 @@ h1{
     position: absolute;
     right: 0;
     bottom: 0;
+    display: none;
 }
 
 #area4-wall-left-top{
@@ -268,6 +265,7 @@ h1{
     position: absolute;
     left: 300px; /*quanto menor mais perto*/
     top: 550px; /*quanto menor mais perto*/
+    display: none;
 }
 
 #platform-2{
@@ -277,6 +275,7 @@ h1{
     position: absolute;
     left: 550px;
     top: 400px;
+    display: none;
 }
 
 #platform-3{
@@ -286,6 +285,7 @@ h1{
     position: absolute;
     left: 730px;
     top: 300px;
+    display: none;
 }
 
 #platform-4{
@@ -295,6 +295,7 @@ h1{
     position: absolute;
     left: 900px;
     top: 300px;
+    display: none;
 }
 
 /*plataforma de tijegla*/
