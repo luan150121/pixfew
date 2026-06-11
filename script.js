@@ -13,6 +13,10 @@ const area4RightElement = document.getElementById("area4-wall-left-bottom");
 const area5LeftElement = document.getElementById("area5-wall-left-top");
 const area5RightElement = document.getElementById("area5-wall-left-bottom");
 
+//novo sistema de salas
+const room2WallTopElement = document.getElementById("room2-wall-left-top");
+const room2WallBottomElement = document.getElementById("room2-wall-left-bottom");
+
 const floorElement = document.getElementById("floor");
 const floorLeftElement = document.getElementById("floor-left");
 const floorRightElement = document.getElementById("floor-right");
@@ -69,6 +73,7 @@ let fallingPlatformTimerStarted = false;
 
 //sistema de salas novo
 let currentRoom = 1;
+let spawnFromDoor = false;
 
 const rooms = {
     1: {
@@ -280,10 +285,10 @@ const fallingPlatform = {
 
 //hitbox da porta
 const door = {
-    x: 600,
-    y: 647,
     width: 60,
-    height: 90
+    height: 90,
+    x: (window.innerWidth / 2) - 30,
+    y: window.innerHeight - 40 - 90
 };
 
 //saída lateral direita da primeira área
@@ -675,7 +680,14 @@ function gameLoop(currentTime){
 
     //impede o player de sair pela esquerda
     if(x < 0){
-        x = 0;
+
+        if(currentRoom === 2 && y > 250 && y < window.innerHeight - 250){
+            currentRoom = 1;
+            spawnFromDoor = true;
+            loadRoom();
+        }else{
+            x = 0;
+        }
     }
 
     //impede o player de sair por cima
@@ -765,16 +777,6 @@ function gameLoop(currentTime){
         }
     }
 
-    if(currentRoom === 2){
-
-    if(x <= 40){
-
-        currentRoom = 1;
-
-        loadRoom();
-        }
-    }
-
     //atualiza a posição do player na tela
     player.style.left = x + "px";
     player.style.top = y + "px";
@@ -789,8 +791,18 @@ function loadRoom(){
     const room = rooms[currentRoom];
     const block = document.getElementById("area2-block");
 
-    x = room.spawnX;
-    y = room.spawnY;
+    if(currentRoom === 1 && spawnFromDoor){
+
+        x = 620;
+        y = 610;
+
+        spawnFromDoor = false;
+
+    }else{
+
+        x = room.spawnX;
+        y = room.spawnY;
+    }
 
     if(doorElement){
         doorElement.style.display =
@@ -804,6 +816,21 @@ function loadRoom(){
 
     if(!room.showDoor && popup){
         popup.style.display = "none";
+    }
+
+    if(room2WallTopElement){
+        room2WallTopElement.style.display =
+            currentRoom === 2 ? "block" : "none";
+    }
+
+    if(room2WallBottomElement){
+        room2WallBottomElement.style.display =
+            currentRoom === 2 ? "block" : "none";
+    }
+
+    if(wallLeftElement){
+        wallLeftElement.style.display =
+            currentRoom === 1 ? "block" : "none";
     }
 }
 

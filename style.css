@@ -434,3 +434,23 @@ h1{
     left: 350px;
     top: 420px;
 }
+
+#room2-wall-left-top{
+    display: none;
+    width: 40px;
+    height: 250px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#room2-wall-left-bottom{
+    display: none;
+    width: 40px;
+    height: 250px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
