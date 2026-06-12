@@ -13,6 +13,10 @@ const area4RightElement = document.getElementById("area4-wall-left-bottom");
 const area5LeftElement = document.getElementById("area5-wall-left-top");
 const area5RightElement = document.getElementById("area5-wall-left-bottom");
 
+//novo sistema de salas
+const room2WallTopElement = document.getElementById("room2-wall-left-top");
+const room2WallBottomElement = document.getElementById("room2-wall-left-bottom");
+
 const floorElement = document.getElementById("floor");
 const floorLeftElement = document.getElementById("floor-left");
 const floorRightElement = document.getElementById("floor-right");
@@ -69,6 +73,7 @@ let fallingPlatformTimerStarted = false;
 
 //sistema de salas novo
 let currentRoom = 1;
+let spawnFromDoor = false;
 
 const rooms = {
     1: {
@@ -83,7 +88,15 @@ const rooms = {
         spawnY: window.innerHeight - 100,
         showDoor: false,
         showBlock: true
-    }
+    },
+
+    3: {
+        spawnX: 80,
+        spawnY: window.innerHeight - 100,
+        showDoor: false,
+        showBlock: false
+    },
+
 };
 
 //define onde o player aparece ao trocar de área
@@ -280,10 +293,10 @@ const fallingPlatform = {
 
 //hitbox da porta
 const door = {
-    x: 600,
-    y: 647,
     width: 60,
-    height: 90
+    height: 90,
+    x: (window.innerWidth / 2) - 30,
+    y: window.innerHeight - 40 - 90
 };
 
 //saída lateral direita da primeira área
@@ -450,11 +463,11 @@ function checkWallCollision(playerBox){
         return true;
     }
 
-    if(area3LeftElement && area3Walls.some(wall => checkColision(playerBox, wall))){
+    if(currentRoom === 3 && area3LeftElement && area3Walls.some(wall => checkColision(playerBox, wall))){
         return true;
     }
 
-    if(area3RightElement && area3RightWalls.some(wall => checkColision(playerBox, wall))){
+    if(currentRoom === 3 && area3RightElement && area3RightWalls.some(wall => checkColision(playerBox, wall))){
         return true;
     }
 
@@ -479,7 +492,7 @@ function checkWallCollision(playerBox){
     }
 
     //colisão com plataformas suspensas
-    if(platforms.some(platform => platform.element && checkColision(playerBox, platform))){
+    if(currentRoom === 3 && platforms.some(platform => platform.element && checkColision(playerBox, platform))){
         return true;
     }
 
@@ -506,6 +519,7 @@ document.addEventListener("keydown", function(event){
     dashTime = dashDuration;
     dashCooldown = true;
     }
+
     //ativa a tecla pressionada
     if(event.key in keys){
         keys[event.key] = true;
@@ -675,7 +689,14 @@ function gameLoop(currentTime){
 
     //impede o player de sair pela esquerda
     if(x < 0){
-        x = 0;
+
+        if(currentRoom === 2 && y > 250 && y < window.innerHeight - 250){
+            currentRoom = 1;
+            spawnFromDoor = true;
+            loadRoom();
+        }else{
+            x = 0;
+        }
     }
 
     //impede o player de sair por cima
@@ -703,6 +724,16 @@ function gameLoop(currentTime){
         height: hitbox.height
     };
 
+    if(currentRoom === 1 && x >= window.innerWidth - hitbox.width){
+        currentRoom = 3;
+        loadRoom();
+    }
+
+    if(currentRoom === 3 && x <= 1){
+        currentRoom = 1;
+        loadRoom();
+    }
+
     //ativa interação com a porta somente se a porta existir na página
     if(currentRoom === 1 && doorElement && checkColision(playerBox, door)){
         canEnterDoor = true;
@@ -719,20 +750,14 @@ function gameLoop(currentTime){
         }
     }
 
-    //se encostar na saída lateral direita, vai para a área 3
-    if(exitAreaElement && checkColision(playerBox, exitArea)){
-        localStorage.setItem("spawnPoint", "fromLeft");
-        window.location.href = "area3.html";
-    }
-
     //se encostar na saída direita superior da área 3, vai para area4
-    if(area3RightElement && checkColision(playerBox, area3RightTopExitArea)){
+    if(currentRoom === 3 && area3RightElement && checkColision(playerBox, area3RightTopExitArea)){
         localStorage.setItem("spawnPoint", "fromLeft");
         window.location.href = "area4.html";
     }
 
     //se encostar na saída direita inferior da área 3, vai para area5
-    if(area3RightElement && checkColision(playerBox, area3RightBottomExitArea)){
+    if(currentRoom === 3 && area3RightElement && checkColision(playerBox, area3RightBottomExitArea)){
         localStorage.setItem("spawnPoint", "fromLeft");
         window.location.href = "area5.html";
     }
@@ -765,16 +790,6 @@ function gameLoop(currentTime){
         }
     }
 
-    if(currentRoom === 2){
-
-    if(x <= 40){
-
-        currentRoom = 1;
-
-        loadRoom();
-        }
-    }
-
     //atualiza a posição do player na tela
     player.style.left = x + "px";
     player.style.top = y + "px";
@@ -789,8 +804,18 @@ function loadRoom(){
     const room = rooms[currentRoom];
     const block = document.getElementById("area2-block");
 
-    x = room.spawnX;
-    y = room.spawnY;
+    if(currentRoom === 1 && spawnFromDoor){
+
+        x = 620;
+        y = 610;
+
+        spawnFromDoor = false;
+
+    }else{
+
+        x = room.spawnX;
+        y = room.spawnY;
+    }
 
     if(doorElement){
         doorElement.style.display =
@@ -805,6 +830,40 @@ function loadRoom(){
     if(!room.showDoor && popup){
         popup.style.display = "none";
     }
+
+    if(room2WallTopElement){
+        room2WallTopElement.style.display =
+            currentRoom === 2 ? "block" : "none";
+    }
+
+    if(room2WallBottomElement){
+        room2WallBottomElement.style.display =
+            currentRoom === 2 ? "block" : "none";
+    }
+
+    if(wallLeftElement){
+        wallLeftElement.style.display =
+            currentRoom === 1 ? "block" : "none";
+    }
+
+    const room3Elements = [
+        platform1Element,
+        platform2Element,
+        platform3Element,
+        platform4Element,
+        area3LeftElement,
+        document.getElementById("area3-wall-left-bottom"),
+        area3RightElement,
+        document.getElementById("area3-wall-right-middle"),
+        document.getElementById("area3-wall-right-bottom")
+    ];
+
+    room3Elements.forEach(function(element){
+        if(element){
+            element.style.display =
+                currentRoom === 3 ? "block" : "none";
+        }
+    });
 }
 
 //inicia o loop do jogo
