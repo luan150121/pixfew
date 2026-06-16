@@ -17,6 +17,7 @@ const area5RightElement = document.getElementById("area5-wall-left-bottom");
 const room2WallTopElement = document.getElementById("room2-wall-left-top");
 const room2WallBottomElement = document.getElementById("room2-wall-left-bottom");
 const room2WallRightElement = document.getElementById("room2-wall-right");
+const area2BlockElement = document.getElementById("area2-block");
 
 const floorElement = document.getElementById("floor");
 const floorLeftElement = document.getElementById("floor-left");
@@ -90,35 +91,69 @@ const rooms = {
         spawnX: 80,
         spawnY: window.innerHeight - 100,
         showDoor: false,
-        showBlock: true
+        elements: [
+            area2BlockElement,
+            room2WallTopElement,
+            room2WallBottomElement,
+            room2WallRightElement
+        ]
     },
 
     3: {
         spawnX: 80,
         spawnY: window.innerHeight - 100,
         showDoor: false,
-        showBlock: false
+        showBlock: false,
+        elements: [
+            platform1Element,
+            platform2Element,
+            platform3Element,
+            platform4Element,
+            area3LeftElement,
+            document.getElementById("area3-wall-left-bottom"),
+            area3RightElement,
+            document.getElementById("area3-wall-right-middle"),
+            document.getElementById("area3-wall-right-bottom")
+        ]
     },
 
     4: {
         spawnX: 80,
         spawnY: window.innerHeight - 100,
         showDoor: false,
-        showBlock: false
+        showBlock: false,
+        elements: [
+            windZoneElement,
+            fallingPlatformElement,
+            area4LeftElement,
+            area4RightElement
+        ]
     },
 
     5: {
         spawnX: 80,
         spawnY: window.innerHeight - 100,
         showDoor: false,
-        showBlock: false
+        showBlock: false,
+        elements: [
+            floorLeftElement,
+            floorRightElement,
+            area5LeftElement,
+            area5RightElement
+        ]
     },
 
     6: {
         spawnX: (window.innerWidth / 2) - 10,
         spawnY: 120,
         showDoor: false,
-        showBlock: false
+        showBlock: false,
+        elements: [
+            memoryFragmentElement,
+            memoryPopupElement,
+            damageObstacleElement,
+            damagePopupElement
+        ]
     }
 
 };
@@ -904,7 +939,6 @@ function gameLoop(currentTime){
 function loadRoom(){
 
     const room = rooms[currentRoom];
-    const block = document.getElementById("area2-block");
 
     if(currentRoom === 1 && nextSpawn === "door"){
 
@@ -936,8 +970,8 @@ function loadRoom(){
             currentRoom === 5 ? "none" : "block";
     }
 
-    if(block){
-        block.style.display =
+    if(area2BlockElement){
+        area2BlockElement.style.display =
             room.showBlock ? "block" : "none";
     }
 
@@ -965,68 +999,25 @@ function loadRoom(){
             currentRoom === 1 ? "block" : "none";
     }
 
-    const room3Elements = [
-        platform1Element,
-        platform2Element,
-        platform3Element,
-        platform4Element,
-        area3LeftElement,
-        document.getElementById("area3-wall-left-bottom"),
-        area3RightElement,
-        document.getElementById("area3-wall-right-middle"),
-        document.getElementById("area3-wall-right-bottom")
-    ];
-
-    room3Elements.forEach(function(element){
-        if(element){
-            element.style.display =
-                currentRoom === 3 ? "block" : "none";
+    Object.values(rooms).forEach(function(roomData){
+        if(roomData.elements){
+            roomData.elements.forEach(function(element){
+                if(element){
+                    element.style.display = "none";
+                }
+            });
         }
     });
 
-    const room4Elements = [
-        windZoneElement,
-        fallingPlatformElement,
-        area4LeftElement,
-        area4RightElement
-    ];
+    if(room.elements){
+        room.elements.forEach(function(element){
+            if(element){
+                element.style.display = "block";
+            }
+        });
+    }
 
-    room4Elements.forEach(function(element){
-        if(element){
-            element.style.display =
-                currentRoom === 4 ? "block" : "none";
-        }
-    });
-
-    const room5Elements = [
-        floorLeftElement,
-        floorRightElement,
-        area5LeftElement,
-        area5RightElement
-    ];
-
-    room5Elements.forEach(function(element){
-        if(element){
-            element.style.display =
-                currentRoom === 5 ? "block" : "none";
-        }
-    });
-
-    const room6Elements = [
-        memoryFragmentElement,
-        memoryPopupElement,
-        damageObstacleElement,
-        damagePopupElement
-    ];
-
-    room6Elements.forEach(function(element){
-        if(element){
-            element.style.display =
-                currentRoom === 6 ? "block" : "none";
-        }
-    });
 }
 
 //inicia o loop do jogo
 requestAnimationFrame(gameLoop);
-
