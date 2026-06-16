@@ -218,6 +218,7 @@ h1{
     position: absolute;
     left: 0;
     top: 0;
+    display: none;
 }
 
 #area4-wall-left-bottom{
@@ -227,6 +228,7 @@ h1{
     position: absolute;
     left: 0;
     bottom: 0;
+    display: none;
 }
 
 #area5-wall-left-top{
@@ -424,6 +426,7 @@ h1{
     right: 180px;
     bottom: 40px;
     border-radius: 40px 40px 0px 0px;
+    display: none;
 }
 
 /*plataforma que cai*/
@@ -434,6 +437,7 @@ h1{
     position: absolute;
     left: 350px;
     top: 420px;
+    display: none;
 }
 
 #room2-wall-left-top{

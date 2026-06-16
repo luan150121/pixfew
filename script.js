@@ -74,7 +74,8 @@ let fallingPlatformTimerStarted = false;
 
 //sistema de salas novo
 let currentRoom = 1;
-let spawnFromDoor = false;
+let nextSpawn = "default";
+let spawnFromRight = false;
 
 const rooms = {
     1: {
@@ -92,6 +93,13 @@ const rooms = {
     },
 
     3: {
+        spawnX: 80,
+        spawnY: window.innerHeight - 100,
+        showDoor: false,
+        showBlock: false
+    },
+
+    4: {
         spawnX: 80,
         spawnY: window.innerHeight - 100,
         showDoor: false,
@@ -410,7 +418,7 @@ function checkColision(playerBox, wallBox){
 function checkWallCollision(playerBox){
 
     //se o player estiver no jato de vento, ele é empurrado para cima
-    if(windZoneElement && checkColision(playerBox, windZone)){
+    if(currentRoom === 4 && windZoneElement && checkColision(playerBox, windZone)){
         velocityY = -6;
         isGrounded = false;
     }
@@ -425,30 +433,17 @@ function checkWallCollision(playerBox){
         }
     }
 
-    if(area4LeftElement && checkColision(playerBox, area4LeftExitArea)){
-    localStorage.setItem("spawnPoint", "fromRight");
-    window.location.href = "area3.html";
-    return false;
+    if(currentRoom === 4 && area4LeftElement && checkColision(playerBox, area4LeftExitArea)){
+        currentRoom = 3;
+        spawnFromRight = true;
+        loadRoom();
+        return false;
     }
 
     //permite sair pela passagem da área 5 antes de bloquear na parede
     if(area5LeftElement && checkColision(playerBox, area5LeftExitArea)){
         localStorage.setItem("spawnPoint", "fromRight");
         window.location.href = "area3.html";
-        return false;
-    }
-
-    //permite sair pela passagem da área 2 antes de bloquear na parede
-    if(leftExitElement && checkColision(playerBox, leftExitArea)){
-        localStorage.setItem("spawnPoint", "fromRight");
-        window.location.href = "game.html";
-        return false;
-    }
-
-    //permite sair pela passagem da área 3 antes de bloquear na parede
-    if(area3LeftElement && checkColision(playerBox, area3LeftExitArea)){
-        localStorage.setItem("spawnPoint", "fromRight");
-        window.location.href = "game.html";
         return false;
     }
 
@@ -476,7 +471,7 @@ function checkWallCollision(playerBox){
         return true;
     }
 
-    if(area4LeftElement && area4Walls.some(wall => checkColision(playerBox, wall))){
+    if(currentRoom === 4 && area4LeftElement && area4Walls.some(wall => checkColision(playerBox, wall))){
         return true;
     }
 
@@ -697,11 +692,15 @@ function gameLoop(currentTime){
 
         if(currentRoom === 2 && y > 250 && y < window.innerHeight - 250){
             currentRoom = 1;
-            spawnFromDoor = true;
+            nextSpawn = "door";
             loadRoom();
 
         }else if(currentRoom === 3 && y > 250 && y < window.innerHeight - 250){
             currentRoom = 1;
+            loadRoom();
+
+        }else if(currentRoom === 4 && y > 250 && y < window.innerHeight - 250){
+            currentRoom = 3;
             loadRoom();
 
         }else{
@@ -757,8 +756,8 @@ function gameLoop(currentTime){
 
     //se encostar na saída direita superior da área 3, vai para area4
     if(currentRoom === 3 && area3RightElement && checkColision(playerBox, area3RightTopExitArea)){
-        localStorage.setItem("spawnPoint", "fromLeft");
-        window.location.href = "area4.html";
+        currentRoom = 4;
+        loadRoom();
     }
 
     //se encostar na saída direita inferior da área 3, vai para area5
@@ -809,12 +808,19 @@ function loadRoom(){
     const room = rooms[currentRoom];
     const block = document.getElementById("area2-block");
 
-    if(currentRoom === 1 && spawnFromDoor){
+    if(currentRoom === 1 && nextSpawn === "door"){
 
-        x = 620;
-        y = 610;
+        x = (window.innerWidth / 2) - 10;
+        y = window.innerHeight - 40 - hitbox.height;
 
-        spawnFromDoor = false;
+        nextSpawn = "default";
+
+    }else if(currentRoom === 3 && spawnFromRight){
+
+        x = window.innerWidth - 120;
+        y = window.innerHeight - 100;
+
+        spawnFromRight = false;
 
     }else{
 
@@ -874,7 +880,22 @@ function loadRoom(){
                 currentRoom === 3 ? "block" : "none";
         }
     });
+
+    const room4Elements = [
+        windZoneElement,
+        fallingPlatformElement,
+        area4LeftElement,
+        area4RightElement
+    ];
+
+    room4Elements.forEach(function(element){
+        if(element){
+            element.style.display =
+                currentRoom === 4 ? "block" : "none";
+        }
+    });
 }
 
 //inicia o loop do jogo
 requestAnimationFrame(gameLoop);
+
