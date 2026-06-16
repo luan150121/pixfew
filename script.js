@@ -77,6 +77,7 @@ let currentRoom = 1;
 let nextSpawn = "default";
 let spawnFromRight = false;
 
+//salas geradas direto no js
 const rooms = {
     1: {
         spawnX: window.innerWidth - 120,
@@ -105,6 +106,20 @@ const rooms = {
         showDoor: false,
         showBlock: false
     },
+
+    5: {
+        spawnX: 80,
+        spawnY: window.innerHeight - 100,
+        showDoor: false,
+        showBlock: false
+    },
+
+    6: {
+        spawnX: (window.innerWidth / 2) - 10,
+        spawnY: 120,
+        showDoor: false,
+        showBlock: false
+    }
 
 };
 
@@ -406,6 +421,114 @@ const windZone = {
     height: 260
 };
 
+const roomTransitions = [
+    {
+        room: 4,
+        area: area4LeftExitArea,
+        requiredElement: area4LeftElement,
+        toRoom: 3,
+        apply: function(){
+            spawnFromRight = true;
+        }
+    },
+    {
+        room: 5,
+        area: area5LeftExitArea,
+        requiredElement: area5LeftElement,
+        toRoom: 3,
+        apply: function(){
+            spawnFromRight = true;
+        }
+    }
+];
+
+const roomExitRules = [
+    {
+        room: 1,
+        condition: playerBox => playerBox.x >= window.innerWidth - hitbox.width,
+        toRoom: 3
+    },
+    {
+        room: 3,
+        condition: playerBox => area3RightElement && checkColision(playerBox, area3RightTopExitArea),
+        toRoom: 4
+    },
+    {
+        room: 3,
+        condition: playerBox => area3RightElement && checkColision(playerBox, area3RightBottomExitArea),
+        toRoom: 5
+    },
+    {
+        room: 5,
+        condition: playerBox => checkColision(playerBox, downExitArea),
+        toRoom: 6
+    },
+    {
+        room: 2,
+        condition: playerBox => playerBox.x < 0 && playerBox.y > 250 && playerBox.y < window.innerHeight - 250,
+        toRoom: 1,
+        apply: function(){
+            nextSpawn = "door";
+        }
+    },
+    {
+        room: 3,
+        condition: playerBox => playerBox.x < 0 && playerBox.y > 250 && playerBox.y < window.innerHeight - 250,
+        toRoom: 1
+    },
+    {
+        room: 4,
+        condition: playerBox => playerBox.x < 0 && playerBox.y > 250 && playerBox.y < window.innerHeight - 250,
+        toRoom: 3
+    }
+];
+
+const collisionConfig = {
+    1: [
+        { boxes: walls, requiredElement: wallLeftElement },
+        { boxes: [floor], requiredElement: floorElement, active: () => currentRoom !== 5 },
+        { boxes: [floorLeft], requiredElement: floorLeftElement },
+        { boxes: [floorRight], requiredElement: floorRightElement }
+    ],
+    2: [
+        { boxes: area2Walls },
+        { custom: playerBox => playerBox.x + playerBox.width > window.innerWidth - 40 }
+    ],
+    3: [
+        { boxes: area3Walls, requiredElement: area3LeftElement },
+        { boxes: area3RightWalls, requiredElement: area3RightElement },
+        { boxes: [floor], requiredElement: floorElement, active: () => currentRoom !== 5 },
+        { boxes: [floorLeft], requiredElement: floorLeftElement },
+        { boxes: [floorRight], requiredElement: floorRightElement },
+        { boxes: platforms, requiredElement: platform1Element }
+    ],
+    4: [
+        { boxes: area4Walls, requiredElement: area4LeftElement },
+        { boxes: [floor], requiredElement: floorElement, active: () => currentRoom !== 5 },
+        { boxes: [floorLeft], requiredElement: floorLeftElement },
+        { boxes: [floorRight], requiredElement: floorRightElement }
+    ],
+    5: [
+        { boxes: area5Walls, requiredElement: area5LeftElement },
+        { boxes: [floorLeft], requiredElement: floorLeftElement },
+        { boxes: [floorRight], requiredElement: floorRightElement }
+    ],
+    6: [
+        { boxes: [floor], requiredElement: floorElement, active: () => currentRoom !== 5 },
+        { boxes: [floorLeft], requiredElement: floorLeftElement },
+        { boxes: [floorRight], requiredElement: floorRightElement }
+    ]
+};
+
+function createPlayerBox(){
+    return {
+        x: x,
+        y: y,
+        width: hitbox.width,
+        height: hitbox.height
+    };
+}
+
 //função de colisão
 function checkColision(playerBox, wallBox){
     return playerBox.x < wallBox.x + wallBox.width &&
@@ -415,9 +538,49 @@ function checkColision(playerBox, wallBox){
 }
 
 //verifica colisão com as paredes da área atual
+function checkRoomTransition(playerBox){
+    const transition = roomTransitions.find(item =>
+        item.room === currentRoom &&
+        item.requiredElement &&
+        checkColision(playerBox, item.area)
+    );
+
+    if(!transition){
+        return false;
+    }
+
+    currentRoom = transition.toRoom;
+
+    if(typeof transition.apply === "function"){
+        transition.apply();
+    }
+
+    loadRoom();
+    return true;
+}
+
+function checkRoomExit(playerBox){
+    const exitRule = roomExitRules.find(item =>
+        item.room === currentRoom &&
+        item.condition(playerBox)
+    );
+
+    if(!exitRule){
+        return false;
+    }
+
+    currentRoom = exitRule.toRoom;
+
+    if(typeof exitRule.apply === "function"){
+        exitRule.apply();
+    }
+
+    loadRoom();
+    return true;
+}
+
 function checkWallCollision(playerBox){
 
-    //se o player estiver no jato de vento, ele é empurrado para cima
     if(currentRoom === 4 && windZoneElement && checkColision(playerBox, windZone)){
         velocityY = -6;
         isGrounded = false;
@@ -427,84 +590,33 @@ function checkWallCollision(playerBox){
         if(damagePopupElement){
             damagePopupElement.style.display = "block";
         }
-    }else{
-        if(damagePopupElement){
-            damagePopupElement.style.display = "none";
+    } else if(damagePopupElement){
+        damagePopupElement.style.display = "none";
+    }
+
+    if(checkRoomTransition(playerBox)){
+        return false;
+    }
+
+    const configs = collisionConfig[currentRoom] || [];
+
+    for(const config of configs){
+        if(config.requiredElement === undefined || config.requiredElement){
+            if(config.active && !config.active()){
+                continue;
+            }
+
+            if(config.custom){
+                if(config.custom(playerBox)){
+                    return true;
+                }
+            } else if(config.boxes && config.boxes.some(box => checkColision(playerBox, box))){
+                return true;
+            }
         }
     }
 
-    if(currentRoom === 4 && area4LeftElement && checkColision(playerBox, area4LeftExitArea)){
-        currentRoom = 3;
-        spawnFromRight = true;
-        loadRoom();
-        return false;
-    }
-
-    //permite sair pela passagem da área 5 antes de bloquear na parede
-    if(area5LeftElement && checkColision(playerBox, area5LeftExitArea)){
-        localStorage.setItem("spawnPoint", "fromRight");
-        window.location.href = "area3.html";
-        return false;
-    }
-
-    if(currentRoom === 1 && wallLeftElement && walls.some(wall => checkColision(playerBox, wall))){
-        return true;
-    }
-
-    if(currentRoom === 2 && area2Walls.some(wall => checkColision(playerBox, wall))){
-        return true;
-    }
-
-    if(currentRoom === 2 && playerBox.x + playerBox.width > window.innerWidth - 40){
-        return true;
-    }
-
-    if(leftExitElement && area2Walls.some(wall => checkColision(playerBox, wall))){
-        return true;
-    }
-
-    if(currentRoom === 3 && area3LeftElement && area3Walls.some(wall => checkColision(playerBox, wall))){
-        return true;
-    }
-
-    if(currentRoom === 3 && area3RightElement && area3RightWalls.some(wall => checkColision(playerBox, wall))){
-        return true;
-    }
-
-    if(currentRoom === 4 && area4LeftElement && area4Walls.some(wall => checkColision(playerBox, wall))){
-        return true;
-    }
-
-    if(area5LeftElement && area5Walls.some(wall => checkColision(playerBox, wall))){
-        return true;
-    }
-
-    if(floorElement && checkColision(playerBox, floor)){
-        return true;
-    }
-
-    if(floorLeftElement && checkColision(playerBox, floorLeft)){
-    return true;
-    }
-
-    if(floorRightElement && checkColision(playerBox, floorRight)){
-        return true;
-    }
-
-    //colisão com plataformas suspensas
-    if(currentRoom === 3 && platforms.some(platform => platform.element && checkColision(playerBox, platform))){
-        return true;
-    }
-
     if(fallingPlatformElement && checkColision(playerBox, fallingPlatform)){
-        return true;
-    }
-
-    if(area4LeftElement && area4Walls.some(wall => checkColision(playerBox, wall))){
-        return true;
-    }
-
-    if(area5LeftElement && area5Walls.some(wall => checkColision(playerBox, wall))){
         return true;
     }
 
@@ -689,21 +801,9 @@ function gameLoop(currentTime){
 
     //impede o player de sair pela esquerda
     if(x < 0){
+        const playerBox = createPlayerBox();
 
-        if(currentRoom === 2 && y > 250 && y < window.innerHeight - 250){
-            currentRoom = 1;
-            nextSpawn = "door";
-            loadRoom();
-
-        }else if(currentRoom === 3 && y > 250 && y < window.innerHeight - 250){
-            currentRoom = 1;
-            loadRoom();
-
-        }else if(currentRoom === 4 && y > 250 && y < window.innerHeight - 250){
-            currentRoom = 3;
-            loadRoom();
-
-        }else{
+        if(!checkRoomExit(playerBox)){
             x = 0;
         }
     }
@@ -726,16 +826,13 @@ function gameLoop(currentTime){
     }
 
     //cria a hitbox atual do player
-    const playerBox = {
-        x: x,
-        y: y,
-        width: hitbox.width,
-        height: hitbox.height
-    };
+    const playerBox = createPlayerBox();
 
-    if(currentRoom === 1 && x >= window.innerWidth - hitbox.width){
-        currentRoom = 3;
-        loadRoom();
+    if(checkRoomExit(playerBox)){
+        player.style.left = x + "px";
+        player.style.top = y + "px";
+        requestAnimationFrame(gameLoop);
+        return;
     }
 
     //ativa interação com a porta somente se a porta existir na página
@@ -762,16 +859,17 @@ function gameLoop(currentTime){
 
     //se encostar na saída direita inferior da área 3, vai para area5
     if(currentRoom === 3 && area3RightElement && checkColision(playerBox, area3RightBottomExitArea)){
-        localStorage.setItem("spawnPoint", "fromLeft");
-        window.location.href = "area5.html";
+        currentRoom = 5;
+        loadRoom();
     }
 
     //se cair no buraco da área 5, vai para area6
-    if(floorLeftElement && checkColision(playerBox, downExitArea)){
-        localStorage.setItem("spawnPoint", "fromTop");
-        window.location.href = "area6.html";
+    if(currentRoom === 5 && checkColision(playerBox, downExitArea)){
+        currentRoom = 6;
+        loadRoom();
     }
 
+    //fragmento de memória(popup)
     if(memoryFragmentElement && checkColision(playerBox, memoryFragment)){
         memoryFragmentElement.style.display = "none";
 
@@ -833,6 +931,11 @@ function loadRoom(){
             room.showDoor ? "block" : "none";
     }
 
+    if(floorElement){
+        floorElement.style.display =
+            currentRoom === 5 ? "none" : "block";
+    }
+
     if(block){
         block.style.display =
             room.showBlock ? "block" : "none";
@@ -892,6 +995,34 @@ function loadRoom(){
         if(element){
             element.style.display =
                 currentRoom === 4 ? "block" : "none";
+        }
+    });
+
+    const room5Elements = [
+        floorLeftElement,
+        floorRightElement,
+        area5LeftElement,
+        area5RightElement
+    ];
+
+    room5Elements.forEach(function(element){
+        if(element){
+            element.style.display =
+                currentRoom === 5 ? "block" : "none";
+        }
+    });
+
+    const room6Elements = [
+        memoryFragmentElement,
+        memoryPopupElement,
+        damageObstacleElement,
+        damagePopupElement
+    ];
+
+    room6Elements.forEach(function(element){
+        if(element){
+            element.style.display =
+                currentRoom === 6 ? "block" : "none";
         }
     });
 }
