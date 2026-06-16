@@ -455,3 +455,13 @@ h1{
     left: 0;
     bottom: 0;
 }
+
+#room2-wall-right{
+    display: none;
+    width: 40px;
+    height: 100vh;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    top: 0;
+}

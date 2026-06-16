@@ -16,6 +16,7 @@ const area5RightElement = document.getElementById("area5-wall-left-bottom");
 //novo sistema de salas
 const room2WallTopElement = document.getElementById("room2-wall-left-top");
 const room2WallBottomElement = document.getElementById("room2-wall-left-bottom");
+const room2WallRightElement = document.getElementById("room2-wall-right");
 
 const floorElement = document.getElementById("floor");
 const floorLeftElement = document.getElementById("floor-left");
@@ -452,11 +453,15 @@ function checkWallCollision(playerBox){
     }
 
     if(currentRoom === 1 && wallLeftElement && walls.some(wall => checkColision(playerBox, wall))){
-    return true;
+        return true;
     }
 
     if(currentRoom === 2 && area2Walls.some(wall => checkColision(playerBox, wall))){
-    return true;
+        return true;
+    }
+
+    if(currentRoom === 2 && playerBox.x + playerBox.width > window.innerWidth - 40){
+        return true;
     }
 
     if(leftExitElement && area2Walls.some(wall => checkColision(playerBox, wall))){
@@ -497,15 +502,15 @@ function checkWallCollision(playerBox){
     }
 
     if(fallingPlatformElement && checkColision(playerBox, fallingPlatform)){
-    return true;
+        return true;
     }
 
     if(area4LeftElement && area4Walls.some(wall => checkColision(playerBox, wall))){
-    return true;
+        return true;
     }
 
     if(area5LeftElement && area5Walls.some(wall => checkColision(playerBox, wall))){
-    return true;
+        return true;
     }
 
     return false;
@@ -694,6 +699,11 @@ function gameLoop(currentTime){
             currentRoom = 1;
             spawnFromDoor = true;
             loadRoom();
+
+        }else if(currentRoom === 3 && y > 250 && y < window.innerHeight - 250){
+            currentRoom = 1;
+            loadRoom();
+
         }else{
             x = 0;
         }
@@ -726,11 +736,6 @@ function gameLoop(currentTime){
 
     if(currentRoom === 1 && x >= window.innerWidth - hitbox.width){
         currentRoom = 3;
-        loadRoom();
-    }
-
-    if(currentRoom === 3 && x <= 1){
-        currentRoom = 1;
         loadRoom();
     }
 
@@ -838,6 +843,11 @@ function loadRoom(){
 
     if(room2WallBottomElement){
         room2WallBottomElement.style.display =
+            currentRoom === 2 ? "block" : "none";
+    }
+
+    if(room2WallRightElement){
+        room2WallRightElement.style.display =
             currentRoom === 2 ? "block" : "none";
     }
 
