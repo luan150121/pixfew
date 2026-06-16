@@ -218,6 +218,7 @@ h1{
     position: absolute;
     left: 0;
     top: 0;
+    display: none;
 }
 
 #area4-wall-left-bottom{
@@ -227,9 +228,11 @@ h1{
     position: absolute;
     left: 0;
     bottom: 0;
+    display: none;
 }
 
 #area5-wall-left-top{
+    display: none;
     width: 40px;
     height: 250px;
     background-color: white;
@@ -239,6 +242,7 @@ h1{
 }
 
 #area5-wall-left-bottom{
+    display: none;
     width: 40px;
     height: 250px;
     background-color: white;
@@ -322,6 +326,7 @@ h1{
 }
 
 #floor-left{
+    display: none;
     width: 45vw;
     height: 40px;
     background-color: white;
@@ -331,6 +336,7 @@ h1{
 }
 
 #floor-right{
+    display: none;
     width: 45vw;
     height: 40px;
     background-color: white;
@@ -341,6 +347,7 @@ h1{
 
 /*fragmento de memoria*/
 #memory-fragment{
+    display: none;
     width: 25px;
     height: 25px;
     background-color: cyan;
@@ -351,6 +358,7 @@ h1{
 }
 
 #memory-popup{
+    display: none;
     display: none;
     position: absolute;
     top: 40px;
@@ -392,6 +400,7 @@ h1{
 }
 
 #damage-obstacle{
+    display: none;
     width: 80px;
     height: 30px;
     background-color: crimson;
@@ -401,6 +410,7 @@ h1{
 }
 
 #damage-popup{
+    display: none;
     display: none;
     position: absolute;
     top: 80px;
@@ -424,6 +434,7 @@ h1{
     right: 180px;
     bottom: 40px;
     border-radius: 40px 40px 0px 0px;
+    display: none;
 }
 
 /*plataforma que cai*/
@@ -434,6 +445,7 @@ h1{
     position: absolute;
     left: 350px;
     top: 420px;
+    display: none;
 }
 
 #room2-wall-left-top{
@@ -454,4 +466,14 @@ h1{
     position: absolute;
     left: 0;
     bottom: 0;
+}
+
+#room2-wall-right{
+    display: none;
+    width: 40px;
+    height: 100vh;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
