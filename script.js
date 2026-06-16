@@ -868,3 +868,5 @@ function loadRoom(){
 
 //inicia o loop do jogo
 requestAnimationFrame(gameLoop);
+
+//teste
