@@ -621,7 +621,7 @@ function checkWallCollision(playerBox){
         isGrounded = false;
     }
 
-    if(damageObstacleElement && checkColision(playerBox, damageObstacle)){
+    if(currentRoom === 6 && damageObstacleElement && checkColision(playerBox, damageObstacle)){
         if(damagePopupElement){
             damagePopupElement.style.display = "block";
         }
@@ -651,7 +651,7 @@ function checkWallCollision(playerBox){
         }
     }
 
-    if(fallingPlatformElement && checkColision(playerBox, fallingPlatform)){
+    if(currentRoom === 4 && fallingPlatformElement && checkColision(playerBox, fallingPlatform)){
         return true;
     }
 
@@ -734,6 +734,11 @@ function gameLoop(currentTime){
         if(checkWallCollision(dashPlayerBox)){
             x -= facingDirection * dashSpeed * deltaTime;
             isDashing = false;
+            dashTime = 0;
+
+            setTimeout(function(){
+                dashCooldown = false;
+            }, 500);
         }
 
         dashTime -= deltaTime;
@@ -838,9 +843,14 @@ function gameLoop(currentTime){
     if(x < 0){
         const playerBox = createPlayerBox();
 
-        if(!checkRoomExit(playerBox)){
-            x = 0;
+        if(checkRoomExit(playerBox)){
+            player.style.left = x + "px";
+            player.style.top = y + "px";
+            requestAnimationFrame(gameLoop);
+            return;
         }
+
+        x = 0;
     }
 
     //impede o player de sair por cima
@@ -905,7 +915,7 @@ function gameLoop(currentTime){
     }
 
     //fragmento de memória(popup)
-    if(memoryFragmentElement && checkColision(playerBox, memoryFragment)){
+    if(currentRoom === 6 && memoryFragmentElement && checkColision(playerBox, memoryFragment)){
         memoryFragmentElement.style.display = "none";
 
         if(memoryPopupElement){
