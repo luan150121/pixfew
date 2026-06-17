@@ -81,7 +81,7 @@ let spawnFromRight = false;
 //salas geradas direto no js
 const rooms = {
     1: {
-        spawnX: window.innerWidth - 120,
+        spawnX: 80,
         spawnY: window.innerHeight - 100,
         showDoor: true,
         showBlock: false
@@ -268,9 +268,9 @@ const area3RightWalls = [
     },
     {
         x: window.innerWidth - 40,
-        y: window.innerHeight - 120,
+        y: window.innerHeight - 250,
         width: 40,
-        height: 120
+        height: 250
     }
 ];
 
@@ -485,12 +485,17 @@ const roomExitRules = [
     },
     {
         room: 3,
-        condition: playerBox => area3RightElement && checkColision(playerBox, area3RightTopExitArea),
+        condition: playerBox =>
+            playerBox.x >= window.innerWidth - hitbox.width &&
+            playerBox.y >= 160 &&
+            playerBox.y <= 300,
         toRoom: 4
     },
     {
         room: 3,
-        condition: playerBox => area3RightElement && checkColision(playerBox, area3RightBottomExitArea),
+        condition: playerBox =>
+            playerBox.x >= window.innerWidth - hitbox.width &&
+            playerBox.y >= 450,
         toRoom: 5
     },
     {
@@ -515,6 +520,17 @@ const roomExitRules = [
         room: 4,
         condition: playerBox => playerBox.x < 0 && playerBox.y > 250 && playerBox.y < window.innerHeight - 250,
         toRoom: 3
+    },
+    {
+        room: 5,
+        condition: playerBox =>
+            playerBox.x < 0 &&
+            playerBox.y > 250 &&
+            playerBox.y < window.innerHeight - 250,
+        toRoom: 3,
+        apply: function(){
+            spawnFromRight = true;
+        }
     }
 ];
 
@@ -627,10 +643,6 @@ function checkWallCollision(playerBox){
         }
     } else if(damagePopupElement){
         damagePopupElement.style.display = "none";
-    }
-
-    if(checkRoomTransition(playerBox)){
-        return false;
     }
 
     const configs = collisionConfig[currentRoom] || [];
@@ -896,18 +908,6 @@ function gameLoop(currentTime){
         }
     }
 
-    //se encostar na saída direita superior da área 3, vai para area4
-    if(currentRoom === 3 && area3RightElement && checkColision(playerBox, area3RightTopExitArea)){
-        currentRoom = 4;
-        loadRoom();
-    }
-
-    //se encostar na saída direita inferior da área 3, vai para area5
-    if(currentRoom === 3 && area3RightElement && checkColision(playerBox, area3RightBottomExitArea)){
-        currentRoom = 5;
-        loadRoom();
-    }
-
     //se cair no buraco da área 5, vai para area6
     if(currentRoom === 5 && checkColision(playerBox, downExitArea)){
         currentRoom = 6;
@@ -1030,4 +1030,5 @@ function loadRoom(){
 }
 
 //inicia o loop do jogo
+loadRoom();
 requestAnimationFrame(gameLoop);
