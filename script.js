@@ -59,7 +59,7 @@ let facingDirection = 1;
 let isDashing = false;
 let dashTime = 0;
 let dashDuration = 10;
-let dashSpeed = 10;
+let dashSpeed = 50;
 let dashCooldown = false;
 
 //desbugar pulo
@@ -78,7 +78,7 @@ let currentRoom = 1;
 let nextSpawn = "default";
 let spawnFromRight = false;
 
-//salas geradas direto no js
+//o que cada sala tem
 const rooms = {
     1: {
         spawnX: 80,
@@ -258,19 +258,19 @@ const area3RightWalls = [
         x: window.innerWidth - 40,
         y: 0,
         width: 40,
-        height: 160
+        height: window.innerHeight * 0.25
     },
     {
         x: window.innerWidth - 40,
-        y: 300,
+        y: window.innerHeight * 0.40,
         width: 40,
-        height: 180
+        height: window.innerHeight * 0.20
     },
     {
         x: window.innerWidth - 40,
-        y: window.innerHeight - 250,
+        y: window.innerHeight * 0.75,
         width: 40,
-        height: 250
+        height: window.innerHeight * 0.25
     }
 ];
 
@@ -477,6 +477,7 @@ const roomTransitions = [
     }
 ];
 
+//configurações de saída de cada sala
 const roomExitRules = [
     {
         room: 1,
@@ -534,6 +535,7 @@ const roomExitRules = [
     }
 ];
 
+//colisões de cada sala
 const collisionConfig = {
     1: [
         { boxes: walls, requiredElement: wallLeftElement },
@@ -543,6 +545,7 @@ const collisionConfig = {
     ],
     2: [
         { boxes: area2Walls },
+        { boxes: [floor], requiredElement: floorElement },
         { custom: playerBox => playerBox.x + playerBox.width > window.innerWidth - 40 }
     ],
     3: [
@@ -960,7 +963,7 @@ function loadRoom(){
     }else if(currentRoom === 3 && spawnFromRight){
 
         x = window.innerWidth - 120;
-        y = window.innerHeight - 100;
+        y = window.innerHeight * 0.65;
 
         spawnFromRight = false;
 
