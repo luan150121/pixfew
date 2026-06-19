@@ -635,11 +635,6 @@ function checkRoomExit(playerBox){
 
 function checkWallCollision(playerBox){
 
-    if(currentRoom === 4 && windZoneElement && checkColision(playerBox, windZone)){
-        velocityY = -6;
-        isGrounded = false;
-    }
-
     if(currentRoom === 6 && damageObstacleElement && checkColision(playerBox, damageObstacle)){
         if(damagePopupElement){
             damagePopupElement.style.display = "block";
@@ -743,6 +738,16 @@ function getCollidingBox(playerBox){
 
     return null;
 }
+
+function applyRoomEffects(){
+    const playerBox = createPlayerBox();
+
+    if(currentRoom === 4 && windZoneElement && checkColision(playerBox, windZone)){
+        velocityY = -6;
+        isGrounded = false;
+    }
+}
+
 //loop principal do jogo
 function gameLoop(currentTime){
 
@@ -823,6 +828,8 @@ function gameLoop(currentTime){
             x += speed * deltaTime;
         }
     }
+
+    applyRoomEffects();
 
     //movimentação vertical
     velocityY += gravity * deltaTime;
