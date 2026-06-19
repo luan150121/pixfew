@@ -258,7 +258,7 @@ const area3RightWalls = [
         x: window.innerWidth - 40,
         y: 0,
         width: 40,
-        height: window.innerHeight * 0.25
+        height: window.innerHeight * 0.32
     },
     {
         x: window.innerWidth - 40,
@@ -268,9 +268,9 @@ const area3RightWalls = [
     },
     {
         x: window.innerWidth - 40,
-        y: window.innerHeight * 0.75,
+        y: window.innerHeight * 0.68,
         width: 40,
-        height: window.innerHeight * 0.25
+        height: window.innerHeight * 0.32
     }
 ];
 
@@ -722,6 +722,27 @@ document.addEventListener("keyup", function(event){
     }
 });
 
+function getCollidingBox(playerBox){
+    const configs = collisionConfig[currentRoom] || [];
+
+    for(const config of configs){
+        if(config.requiredElement === undefined || config.requiredElement){
+            if(config.active && !config.active()){
+                continue;
+            }
+
+            if(config.boxes){
+                const box = config.boxes.find(box => checkColision(playerBox, box));
+
+                if(box){
+                    return box;
+                }
+            }
+        }
+    }
+
+    return null;
+}
 //loop principal do jogo
 function gameLoop(currentTime){
 
@@ -837,12 +858,15 @@ function gameLoop(currentTime){
         }
     }
 
-    if(checkWallCollision(verticalPlayerBox)){
-        y -= velocityY * deltaTime;
+    const collidedBox = getCollidingBox(verticalPlayerBox);
 
+    if(collidedBox){
         if(velocityY > 0){
+            y = collidedBox.y - hitbox.height;
             isGrounded = true;
             coyoteTime = coyoteTimeMax;
+        }else if(velocityY < 0){
+            y = collidedBox.y + collidedBox.height;
         }
 
         velocityY = 0;

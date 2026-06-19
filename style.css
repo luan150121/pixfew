@@ -2,6 +2,7 @@ header{
     text-align: left;
 }
 body{
+    margin: 0;
     background-color: #0b1020;
     text-align: center;
     overflow: hidden;
@@ -23,7 +24,6 @@ h1{
     font-size: 70px;
     color: #4da6ff;
 }
-
 
 /*botões*/
 .button{
@@ -183,7 +183,7 @@ h1{
 
 #area3-wall-right-top{
     width: 40px;
-    height: 25vh;
+    height: 32vh;
     background-color: white;
     position: absolute;
     right: 0;
@@ -203,7 +203,7 @@ h1{
 
 #area3-wall-right-bottom{
     width: 40px;
-    height: 25vh;
+    height: 32vh;
     background-color: white;
     position: absolute;
     right: 0;
@@ -359,19 +359,14 @@ h1{
 
 #memory-popup{
     display: none;
-    display: none;
     position: absolute;
     top: 40px;
     right: 20px;
-
     color: white;
     background-color: rgba(0, 0, 0, 0.6);
-
     padding: 10px 14px;
     border-radius: 8px;
-
     z-index: 5;
-
     opacity: 0;
 }
 
@@ -411,17 +406,13 @@ h1{
 
 #damage-popup{
     display: none;
-    display: none;
     position: absolute;
     top: 80px;
     right: 20px;
-
     color: white;
     background-color: rgba(120, 0, 0, 0.7);
-
     padding: 10px 14px;
     border-radius: 8px;
-
     z-index: 5;
 }
 
