@@ -258,7 +258,7 @@ const area3RightWalls = [
         x: window.innerWidth - 40,
         y: 0,
         width: 40,
-        height: window.innerHeight * 0.32
+        height: window.innerHeight * 0.25
     },
     {
         x: window.innerWidth - 40,
@@ -560,7 +560,8 @@ const collisionConfig = {
         { boxes: area4Walls, requiredElement: area4LeftElement },
         { boxes: [floor], requiredElement: floorElement, active: () => currentRoom !== 5 },
         { boxes: [floorLeft], requiredElement: floorLeftElement },
-        { boxes: [floorRight], requiredElement: floorRightElement }
+        { boxes: [floorRight], requiredElement: floorRightElement },
+        { boxes: [fallingPlatform], requiredElement: fallingPlatformElement }
     ],
     5: [
         { boxes: area5Walls, requiredElement: area5LeftElement },
@@ -659,10 +660,6 @@ function checkWallCollision(playerBox){
                 return true;
             }
         }
-    }
-
-    if(currentRoom === 4 && fallingPlatformElement && checkColision(playerBox, fallingPlatform)){
-        return true;
     }
 
     return false;
@@ -1059,6 +1056,16 @@ function loadRoom(){
                 element.style.display = "block";
             }
         });
+    }
+
+    if(currentRoom === 4 && fallingPlatformElement){
+        fallingPlatformY = 420;
+        fallingPlatform.y = fallingPlatformY;
+        fallingPlatformFalling = false;
+        fallingPlatformTimerStarted = false;
+
+        fallingPlatformElement.style.top = fallingPlatformY + "px";
+        fallingPlatformElement.style.display = "block";
     }
 
 }
