@@ -11,7 +11,8 @@ const area3RightElement = document.getElementById("area3-wall-right-top");
 const area4LeftElement = document.getElementById("area4-wall-left-top");
 const area4RightElement = document.getElementById("area4-wall-left-bottom");
 const area5LeftElement = document.getElementById("area5-wall-left-top");
-const area5RightElement = document.getElementById("area5-wall-left-bottom");
+const area5LeftBottomElement = document.getElementById("area5-wall-left-bottom");
+const area5RightElement = document.getElementById("area5-wall-right");
 
 //novo sistema de salas
 const room2WallTopElement = document.getElementById("room2-wall-left-top");
@@ -135,10 +136,11 @@ const rooms = {
         spawnY: window.innerHeight - 100,
         showDoor: false,
         showBlock: false,
-        elements: [
+            elements: [
             floorLeftElement,
             floorRightElement,
             area5LeftElement,
+            area5LeftBottomElement,
             area5RightElement
         ]
     },
@@ -155,7 +157,6 @@ const rooms = {
             damagePopupElement
         ]
     }
-
 };
 
 //define onde o player aparece ao trocar de área
@@ -311,6 +312,13 @@ const area4LeftExitArea = {
     height: window.innerHeight - 500
 };
 
+const area5RightWall = {
+    x: window.innerWidth - 40,
+    y: 0,
+    width: 40,
+    height: window.innerHeight
+};
+
 //hitbox plataformas suspensas
 const platforms = [
     {
@@ -408,9 +416,9 @@ const area5LeftExitArea = {
 //saída para baixo da área 5
 const downExitArea = {
     x: window.innerWidth * 0.45,
-    y: window.innerHeight - 40,
+    y: window.innerHeight,
     width: window.innerWidth * 0.10,
-    height: 40
+    height: 80
 };
 
 //hitbox do chão
@@ -501,7 +509,10 @@ const roomExitRules = [
     },
     {
         room: 5,
-        condition: playerBox => checkColision(playerBox, downExitArea),
+        condition: playerBox => 
+            playerBox.x + playerBox.width > downExitArea.x &&
+            playerBox.x < downExitArea.x + downExitArea.width &&
+            playerBox.y >= window.innerHeight - hitbox.height,
         toRoom: 6
     },
     {
@@ -565,6 +576,7 @@ const collisionConfig = {
     ],
     5: [
         { boxes: area5Walls, requiredElement: area5LeftElement },
+        { boxes: [area5RightWall], requiredElement: area5RightElement },
         { boxes: [floorLeft], requiredElement: floorLeftElement },
         { boxes: [floorRight], requiredElement: floorRightElement }
     ],
@@ -789,7 +801,6 @@ function gameLoop(currentTime){
             }, 500);
         }
     }
-
 
     //movimentação horizontal
     if(keys.d){
@@ -1067,7 +1078,6 @@ function loadRoom(){
         fallingPlatformElement.style.top = fallingPlatformY + "px";
         fallingPlatformElement.style.display = "block";
     }
-
 }
 
 //inicia o loop do jogo

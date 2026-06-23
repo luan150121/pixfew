@@ -251,6 +251,16 @@ h1{
     bottom: 0;
 }
 
+#area5-wall-right{
+    display: none;
+    width: 40px;
+    height: 100vh;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
 /*chão padrao da mesma altura em todas as telas que tem essa div*/
 #floor{
     width: 100vw;
