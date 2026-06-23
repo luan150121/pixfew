@@ -6,13 +6,25 @@ const doorElement = document.getElementById("door");
 const wallLeftElement = document.getElementById("wall-left");
 const exitAreaElement = document.getElementById("wall-right-top");
 const leftExitElement = document.getElementById("area2-wall-left-top");
+
 const area3LeftElement = document.getElementById("area3-wall-left-top");
 const area3RightElement = document.getElementById("area3-wall-right-top");
+
 const area4LeftElement = document.getElementById("area4-wall-left-top");
 const area4RightElement = document.getElementById("area4-wall-left-bottom");
+
 const area5LeftElement = document.getElementById("area5-wall-left-top");
 const area5LeftBottomElement = document.getElementById("area5-wall-left-bottom");
 const area5RightElement = document.getElementById("area5-wall-right");
+
+const area6WallLeftElement = document.getElementById("area6-wall-left");
+const area6WallRightElement = document.getElementById("area6-wall-right");
+const area6CeilingLeftElement = document.getElementById("area6-ceiling-left");
+const area6CeilingRightElement = document.getElementById("area6-ceiling-right");
+const area6Platform1Element = document.getElementById("area6-platform-1");
+const area6Platform2Element = document.getElementById("area6-platform-2");
+const area6Platform3Element = document.getElementById("area6-platform-3");
+const area6Platform4Element = document.getElementById("area6-platform-4");
 
 //novo sistema de salas
 const room2WallTopElement = document.getElementById("room2-wall-left-top");
@@ -154,7 +166,15 @@ const rooms = {
             memoryFragmentElement,
             memoryPopupElement,
             damageObstacleElement,
-            damagePopupElement
+            damagePopupElement,
+            area6WallLeftElement,
+            area6WallRightElement,
+            area6CeilingLeftElement,
+            area6CeilingRightElement,
+            area6Platform1Element,
+            area6Platform2Element,
+            area6Platform3Element,
+            area6Platform4Element
         ]
     }
 };
@@ -305,6 +325,21 @@ const area5Walls = [
     }
 ];
 
+const area6Walls = [
+    {
+        x: 0,
+        y: 0,
+        width: 40,
+        height: window.innerHeight
+    },
+    {
+        x: window.innerWidth - 40,
+        y: 0,
+        width: 40,
+        height: window.innerHeight
+    }
+];
+
 const area4LeftExitArea = {
     x: 0,
     y: 250,
@@ -317,6 +352,61 @@ const area5RightWall = {
     y: 0,
     width: 40,
     height: window.innerHeight
+};
+
+//plataformas area 6
+const area6Platforms = [
+    {
+        element: area6Platform1Element,
+        x: window.innerWidth * 0.15,
+        y: window.innerHeight * 0.75,
+        width: window.innerWidth * 0.12,
+        height: window.innerHeight * 0.025
+    },
+    {
+        element: area6Platform2Element,
+        x: window.innerWidth * 0.35,
+        y: window.innerHeight * 0.60,
+        width: window.innerWidth * 0.12,
+        height: window.innerHeight * 0.025
+    },
+    {
+        element: area6Platform3Element,
+        x: window.innerWidth * 0.55,
+        y: window.innerHeight * 0.45,
+        width: window.innerWidth * 0.12,
+        height: window.innerHeight * 0.025
+    },
+    {
+        element: area6Platform4Element,
+        x: window.innerWidth * 0.43,
+        y: window.innerHeight * 0.25,
+        width: window.innerWidth * 0.12,
+        height: window.innerHeight * 0.025
+    }
+];
+
+//teto sala 6
+const area6Ceiling = [
+    {
+        x: 0,
+        y: 0,
+        width: window.innerWidth * 0.45,
+        height: 40
+    },
+    {
+        x: window.innerWidth * 0.55,
+        y: 0,
+        width: window.innerWidth * 0.45,
+        height: 40
+    }
+];
+
+const area6TopExitArea = {
+    x: window.innerWidth * 0.45,
+    y: 0,
+    width: window.innerWidth * 0.10,
+    height: 40
 };
 
 //hitbox plataformas suspensas
@@ -543,7 +633,18 @@ const roomExitRules = [
         apply: function(){
             spawnFromRight = true;
         }
-    }
+    },
+    {
+        room: 6,
+        condition: playerBox =>
+            playerBox.x + playerBox.width > area6TopExitArea.x &&
+            playerBox.x < area6TopExitArea.x + area6TopExitArea.width &&
+            playerBox.y <= 0,
+        toRoom: 5,
+        apply: function(){
+            nextSpawn = "fromHole";
+        }
+    },
 ];
 
 //colisões de cada sala
@@ -581,9 +682,10 @@ const collisionConfig = {
         { boxes: [floorRight], requiredElement: floorRightElement }
     ],
     6: [
+        { boxes: area6Walls },
+        { boxes: area6Ceiling, requiredElement: area6CeilingLeftElement },
         { boxes: [floor], requiredElement: floorElement, active: () => currentRoom !== 5 },
-        { boxes: [floorLeft], requiredElement: floorLeftElement },
-        { boxes: [floorRight], requiredElement: floorRightElement }
+        { boxes: area6Platforms, requiredElement: area6Platform1Element }
     ]
 };
 
@@ -956,6 +1058,16 @@ function gameLoop(currentTime){
         loadRoom();
     }
 
+    if(
+        currentRoom === 6 &&
+        damageObstacleElement &&
+        checkColision(playerBox, damageObstacle)
+    ){
+        damagePopupElement.style.display = "block";
+    }else{
+        damagePopupElement.style.display = "none";
+    }
+
     //fragmento de memória(popup)
     if(currentRoom === 6 && memoryFragmentElement && checkColision(playerBox, memoryFragment)){
         memoryFragmentElement.style.display = "none";
@@ -1006,6 +1118,13 @@ function loadRoom(){
 
         spawnFromRight = false;
 
+    }
+    else if(currentRoom === 5 && nextSpawn === "fromHole"){
+
+        x = (window.innerWidth * 0.50) - 10;
+        y = window.innerHeight - 120;
+
+        nextSpawn = "default";
     }else{
 
         x = room.spawnX;
