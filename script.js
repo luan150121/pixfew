@@ -279,7 +279,7 @@ const area3RightWalls = [
         x: window.innerWidth - 40,
         y: 0,
         width: 40,
-        height: window.innerHeight * 0.25
+        height: window.innerHeight * 0.27
     },
     {
         x: window.innerWidth - 40,
