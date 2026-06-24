@@ -7,4 +7,5 @@
 - [] criar sistema de vida
 - [] criar sistema de combate
 - [] criar sistema de dano
-- [] arrumar salas
+- [x] arrumar salas ja existentes
+- [] criar novas salas pro mapa completo

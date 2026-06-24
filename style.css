@@ -261,6 +261,26 @@ h1{
     top: 0;
 }
 
+#area6-wall-left{
+    display: none;
+    width: 40px;
+    height: 100vh;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#area6-wall-right{
+    display: none;
+    width: 40px;
+    height: 100vh;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
 /*chão padrao da mesma altura em todas as telas que tem essa div*/
 #floor{
     width: 100vw;
@@ -333,6 +353,58 @@ h1{
     top: 300px;
 
     transform: rotate(-20deg);
+}
+
+/*plataformas sala 6*/
+#area6-ceiling-left{
+    display: none;
+    width: 45vw;
+    height: 40px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#area6-ceiling-right{
+    display: none;
+    width: 45vw;
+    height: 40px;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+#area6-platform-1,
+#area6-platform-2,
+#area6-platform-3,
+#area6-platform-4{
+    display: none;
+    width: 12vw;
+    height: 2.5vh;
+    background-color: white;
+    position: absolute;
+}
+
+#area6-platform-1{
+    left: 15vw;
+    top: 75vh;
+}
+
+#area6-platform-2{
+    left: 35vw;
+    top: 60vh;
+}
+
+#area6-platform-3{
+    left: 55vw;
+    top: 45vh;
+}
+
+#area6-platform-4{
+    left: 43vw;
+    top: 25vh;
 }
 
 #floor-left{
