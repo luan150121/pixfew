@@ -183,7 +183,7 @@ h1{
 
 #area3-wall-right-top{
     width: 40px;
-    height: 25vh;
+    height: 27vh;
     background-color: white;
     position: absolute;
     right: 0;
@@ -192,7 +192,7 @@ h1{
 }
 
 #area3-wall-right-middle{
-    width: 40px;
+    width: 42px;
     height: 20vh;
     background-color: white;
     position: absolute;
