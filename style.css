@@ -192,12 +192,12 @@ h1{
 }
 
 #area3-wall-right-middle{
-    width: 42px;
+    width: 40px;
     height: 20vh;
     background-color: white;
     position: absolute;
     right: 0;
-    top: 40vh;
+    top: 42vh;
     display: none;
 }
 

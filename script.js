@@ -273,27 +273,75 @@ const area3Walls = [
     }
 ];
 
+//PAREDES DIREITAS DA SALA 3
+const area3RightWallConfig = {
+    width: 40,
+
+    topOpeningStart: 0.32,
+    topOpeningHeight: 0.11,
+
+    bottomOpeningStart: 0.58,
+    bottomOpeningHeight: 0.10
+};
+
 //hitbox das paredes da direita da área 3
-const area3RightWalls = [
-    {
-        x: window.innerWidth - 40,
+let area3RightWalls = [];
+
+function updateArea3RightWalls(){
+
+    const width = area3RightWallConfig.width;
+
+    const topWall = {
+        x: window.innerWidth - width,
         y: 0,
-        width: 40,
-        height: window.innerHeight * 0.27
-    },
-    {
-        x: window.innerWidth - 40,
-        y: window.innerHeight * 0.42,
-        width: 40,
-        height: window.innerHeight * 0.20
-    },
-    {
-        x: window.innerWidth - 40,
-        y: window.innerHeight * 0.68,
-        width: 40,
-        height: window.innerHeight * 0.32
-    }
-];
+        width: width,
+        height: window.innerHeight * area3RightWallConfig.topOpeningStart
+    };
+
+    const middleWall = {
+        x: window.innerWidth - width,
+        y: window.innerHeight * (
+            area3RightWallConfig.topOpeningStart +
+            area3RightWallConfig.topOpeningHeight
+        ),
+        width: width,
+        height: window.innerHeight * (
+            area3RightWallConfig.bottomOpeningStart -
+            area3RightWallConfig.topOpeningStart -
+            area3RightWallConfig.topOpeningHeight
+        )
+    };
+
+    const bottomWall = {
+        x: window.innerWidth - width,
+        y: window.innerHeight * (
+            area3RightWallConfig.bottomOpeningStart +
+            area3RightWallConfig.bottomOpeningHeight
+        ),
+        width: width,
+        height: window.innerHeight * (
+            1 -
+            area3RightWallConfig.bottomOpeningStart -
+            area3RightWallConfig.bottomOpeningHeight
+        )
+    };
+
+    area3RightWalls = [topWall, middleWall, bottomWall];
+
+    const topElement = document.getElementById("area3-wall-right-top");
+    const middleElement = document.getElementById("area3-wall-right-middle");
+    const bottomElement = document.getElementById("area3-wall-right-bottom");
+
+    topElement.style.height = (topWall.height) + "px";
+
+    middleElement.style.top = (middleWall.y) + "px";
+    middleElement.style.height = (middleWall.height) + "px";
+
+    bottomElement.style.top = (bottomWall.y) + "px";
+    bottomElement.style.bottom = "auto";
+    bottomElement.style.height = (bottomWall.height) + "px";
+}
+updateArea3RightWalls();
 
 const area4Walls = [
     {
@@ -728,6 +776,17 @@ function checkRoomTransition(playerBox){
     return true;
 }
 
+function getElementBox(element){
+    const rect = element.getBoundingClientRect();
+
+    return {
+        x: rect.left,
+        y: rect.top,
+        width: rect.width,
+        height: rect.height
+    };
+}
+
 function checkRoomExit(playerBox){
     const exitRule = roomExitRules.find(item =>
         item.room === currentRoom &&
@@ -1103,6 +1162,10 @@ function gameLoop(currentTime){
 function loadRoom(){
 
     const room = rooms[currentRoom];
+
+    if(currentRoom === 3){
+        updateArea3RightWalls();
+    }
 
     if(currentRoom === 1 && nextSpawn === "door"){
 
