@@ -2,6 +2,11 @@
 const player = document.getElementById("player");
 const popup = document.getElementById("interaction-popup");
 
+const gameArea = document.getElementById("game-area");
+
+const gameWidth = gameArea.offsetWidth;
+const gameHeight = gameArea.offsetHeight;
+
 const doorElement = document.getElementById("door");
 const wallLeftElement = document.getElementById("wall-left");
 const exitAreaElement = document.getElementById("wall-right-top");
@@ -56,8 +61,8 @@ const damagePopupElement = document.getElementById("damage-popup");
 const windZoneElement = document.getElementById("wind-zone");
 
 //posição inicial do player (centro da tela)
-let x = (window.innerWidth / 2) - 10;
-let y = (window.innerHeight / 2) - 15;
+let x = (gameWidth / 2) - 10;
+let y = (gameHeight / 2) - 15;
 
 //velocidade do player
 let speed = 3;
@@ -95,14 +100,14 @@ let spawnFromRight = false;
 const rooms = {
     1: {
         spawnX: 80,
-        spawnY: window.innerHeight - 100,
+        spawnY: gameHeight - 100,
         showDoor: true,
         showBlock: false
     },
 
     2: {
         spawnX: 80,
-        spawnY: window.innerHeight - 100,
+        spawnY: gameHeight - 100,
         showDoor: false,
         elements: [
             area2BlockElement,
@@ -114,7 +119,7 @@ const rooms = {
 
     3: {
         spawnX: 80,
-        spawnY: window.innerHeight - 100,
+        spawnY: gameHeight - 100,
         showDoor: false,
         showBlock: false,
         elements: [
@@ -132,7 +137,7 @@ const rooms = {
 
     4: {
         spawnX: 80,
-        spawnY: window.innerHeight - 100,
+        spawnY: gameHeight - 100,
         showDoor: false,
         showBlock: false,
         elements: [
@@ -145,7 +150,7 @@ const rooms = {
 
     5: {
         spawnX: 80,
-        spawnY: window.innerHeight - 100,
+        spawnY: gameHeight - 100,
         showDoor: false,
         showBlock: false,
             elements: [
@@ -158,7 +163,7 @@ const rooms = {
     },
 
     6: {
-        spawnX: (window.innerWidth / 2) - 10,
+        spawnX: (gameWidth / 2) - 10,
         spawnY: 120,
         showDoor: false,
         showBlock: false,
@@ -184,18 +189,18 @@ const spawnPoint = localStorage.getItem("spawnPoint");
 
 if(spawnPoint === "fromLeft"){
     x = 80;
-    y = window.innerHeight - 100;
+    y = gameHeight - 100;
     localStorage.removeItem("spawnPoint");
 }
 
 if(spawnPoint === "fromRight"){
-    x = window.innerWidth - 120;
-    y = window.innerHeight - 100;
+    x = gameWidth - 120;
+    y = gameHeight - 100;
     localStorage.removeItem("spawnPoint");
 }
 
 if(spawnPoint === "fromTop"){
-    x = (window.innerWidth / 2) - 10;
+    x = (gameWidth / 2) - 10;
     y = 120;
     velocityY = 0;
     isGrounded = false;
@@ -225,17 +230,17 @@ const walls = [
         x: 0,
         y: 0,
         width: 40,
-        height: window.innerHeight
+        height: gameHeight
     },
     {
-        x: window.innerWidth - 40,
+        x: gameWidth - 40,
         y: 0,
         width: 40,
         height: 250
     },
     {
-        x: window.innerWidth - 40,
-        y: window.innerHeight - 250,
+        x: gameWidth - 40,
+        y: gameHeight - 250,
         width: 40,
         height: 250
     }
@@ -251,7 +256,7 @@ const area2Walls = [
     },
     {
         x: 0,
-        y: window.innerHeight - 250,
+        y: gameHeight - 250,
         width: 40,
         height: 250
     }
@@ -267,7 +272,7 @@ const area3Walls = [
     },
     {
         x: 0,
-        y: window.innerHeight - 250,
+        y: gameHeight - 250,
         width: 40,
         height: 250
     }
@@ -292,20 +297,20 @@ function updateArea3RightWalls(){
     const width = area3RightWallConfig.width;
 
     const topWall = {
-        x: window.innerWidth - width,
+        x: gameWidth - width,
         y: 0,
         width: width,
-        height: window.innerHeight * area3RightWallConfig.topOpeningStart
+        height: gameHeight * area3RightWallConfig.topOpeningStart
     };
 
     const middleWall = {
-        x: window.innerWidth - width,
-        y: window.innerHeight * (
+        x: gameWidth - width,
+        y: gameHeight * (
             area3RightWallConfig.topOpeningStart +
             area3RightWallConfig.topOpeningHeight
         ),
         width: width,
-        height: window.innerHeight * (
+        height: gameHeight * (
             area3RightWallConfig.bottomOpeningStart -
             area3RightWallConfig.topOpeningStart -
             area3RightWallConfig.topOpeningHeight
@@ -313,13 +318,13 @@ function updateArea3RightWalls(){
     };
 
     const bottomWall = {
-        x: window.innerWidth - width,
-        y: window.innerHeight * (
+        x: gameWidth - width,
+        y: gameHeight * (
             area3RightWallConfig.bottomOpeningStart +
             area3RightWallConfig.bottomOpeningHeight
         ),
         width: width,
-        height: window.innerHeight * (
+        height: gameHeight * (
             1 -
             area3RightWallConfig.bottomOpeningStart -
             area3RightWallConfig.bottomOpeningHeight
@@ -352,7 +357,7 @@ const area4Walls = [
     },
     {
         x: 0,
-        y: window.innerHeight - 250,
+        y: gameHeight - 250,
         width: 40,
         height: 250
     }
@@ -367,7 +372,7 @@ const area5Walls = [
     },
     {
         x: 0,
-        y: window.innerHeight - 250,
+        y: gameHeight - 250,
         width: 40,
         height: 250
     }
@@ -378,13 +383,13 @@ const area6Walls = [
         x: 0,
         y: 0,
         width: 40,
-        height: window.innerHeight
+        height: gameHeight
     },
     {
-        x: window.innerWidth - 40,
+        x: gameWidth - 40,
         y: 0,
         width: 40,
-        height: window.innerHeight
+        height: gameHeight
     }
 ];
 
@@ -392,45 +397,45 @@ const area4LeftExitArea = {
     x: 0,
     y: 250,
     width: 40,
-    height: window.innerHeight - 500
+    height: gameHeight - 500
 };
 
 const area5RightWall = {
-    x: window.innerWidth - 40,
+    x: gameWidth - 40,
     y: 0,
     width: 40,
-    height: window.innerHeight
+    height: gameHeight
 };
 
 //plataformas area 6
 const area6Platforms = [
     {
         element: area6Platform1Element,
-        x: window.innerWidth * 0.15,
-        y: window.innerHeight * 0.75,
-        width: window.innerWidth * 0.12,
-        height: window.innerHeight * 0.025
+        x: gameWidth * 0.15,
+        y: gameHeight * 0.75,
+        width: gameWidth * 0.12,
+        height: gameHeight * 0.025
     },
     {
         element: area6Platform2Element,
-        x: window.innerWidth * 0.35,
-        y: window.innerHeight * 0.60,
-        width: window.innerWidth * 0.12,
-        height: window.innerHeight * 0.025
+        x: gameWidth * 0.35,
+        y: gameHeight * 0.60,
+        width: gameWidth * 0.12,
+        height: gameHeight * 0.025
     },
     {
         element: area6Platform3Element,
-        x: window.innerWidth * 0.55,
-        y: window.innerHeight * 0.45,
-        width: window.innerWidth * 0.12,
-        height: window.innerHeight * 0.025
+        x: gameWidth * 0.55,
+        y: gameHeight * 0.45,
+        width: gameWidth * 0.12,
+        height: gameHeight * 0.025
     },
     {
         element: area6Platform4Element,
-        x: window.innerWidth * 0.43,
-        y: window.innerHeight * 0.25,
-        width: window.innerWidth * 0.12,
-        height: window.innerHeight * 0.025
+        x: gameWidth * 0.43,
+        y: gameHeight * 0.25,
+        width: gameWidth * 0.12,
+        height: gameHeight * 0.025
     }
 ];
 
@@ -439,21 +444,21 @@ const area6Ceiling = [
     {
         x: 0,
         y: 0,
-        width: window.innerWidth * 0.45,
+        width: gameWidth * 0.45,
         height: 40
     },
     {
-        x: window.innerWidth * 0.55,
+        x: gameWidth * 0.55,
         y: 0,
-        width: window.innerWidth * 0.45,
+        width: gameWidth * 0.45,
         height: 40
     }
 ];
 
 const area6TopExitArea = {
-    x: window.innerWidth * 0.45,
+    x: gameWidth * 0.45,
     y: 0,
-    width: window.innerWidth * 0.10,
+    width: gameWidth * 0.10,
     height: 40
 };
 
@@ -500,16 +505,16 @@ const fallingPlatform = {
 const door = {
     width: 60,
     height: 90,
-    x: (window.innerWidth / 2) - 30,
-    y: window.innerHeight - 40 - 90
+    x: (gameWidth / 2) - 30,
+    y: gameHeight - 40 - 90
 };
 
 //saída lateral direita da primeira área
 const exitArea = {
-    x: window.innerWidth - 40,
+    x: gameWidth - 40,
     y: 250,
     width: 40,
-    height: window.innerHeight - 500
+    height: gameHeight - 500
 };
 
 //saída lateral esquerda da área 2
@@ -517,7 +522,7 @@ const leftExitArea = {
     x: 0,
     y: 250,
     width: 40,
-    height: window.innerHeight - 500
+    height: gameHeight - 500
 };
 
 //saída lateral esquerda da área 3
@@ -525,12 +530,12 @@ const area3LeftExitArea = {
     x: 0,
     y: 250,
     width: 40,
-    height: window.innerHeight - 500
+    height: gameHeight - 500
 };
 
 //saída direita superior da área 3
 const area3RightTopExitArea = {
-    x: window.innerWidth - 40,
+    x: gameWidth - 40,
     y: 160,
     width: 40,
     height: 140
@@ -538,46 +543,46 @@ const area3RightTopExitArea = {
 
 //saída direita inferior da área 3
 const area3RightBottomExitArea = {
-    x: window.innerWidth - 40,
+    x: gameWidth - 40,
     y: 480,
     width: 40,
-    height: window.innerHeight - 600
+    height: gameHeight - 600
 };
 
 const area5LeftExitArea = {
     x: 0,
     y: 250,
     width: 40,
-    height: window.innerHeight - 500
+    height: gameHeight - 500
 };
 
 //saída para baixo da área 5
 const downExitArea = {
-    x: window.innerWidth * 0.45,
-    y: window.innerHeight,
-    width: window.innerWidth * 0.10,
+    x: gameWidth * 0.45,
+    y: gameHeight,
+    width: gameWidth * 0.10,
     height: 80
 };
 
 //hitbox do chão
 const floor = {
     x: 0,
-    y: window.innerHeight - 40,
-    width: window.innerWidth,
+    y: gameHeight - 40,
+    width: gameWidth,
     height: 40
 };
 
 const floorLeft = {
     x: 0,
-    y: window.innerHeight - 40,
-    width: window.innerWidth * 0.45,
+    y: gameHeight - 40,
+    width: gameWidth * 0.45,
     height: 40
 };
 
 const floorRight = {
-    x: window.innerWidth * 0.55,
-    y: window.innerHeight - 40,
-    width: window.innerWidth * 0.45,
+    x: gameWidth * 0.55,
+    y: gameHeight - 40,
+    width: gameWidth * 0.45,
     height: 40
 };
 
@@ -596,8 +601,8 @@ const damageObstacle = {
 };
 
 const windZone = {
-    x: window.innerWidth - 270,
-    y: window.innerHeight - 300,
+    x: gameWidth - 270,
+    y: gameHeight - 300,
     width: 90,
     height: 260
 };
@@ -627,22 +632,29 @@ const roomTransitions = [
 const roomExitRules = [
     {
         room: 1,
-        condition: playerBox => playerBox.x >= window.innerWidth - hitbox.width,
+        condition: playerBox => playerBox.x >= gameWidth - hitbox.width,
         toRoom: 3
     },
     {
-        room: 3,
+    room: 3,
         condition: playerBox =>
-            playerBox.x >= window.innerWidth - hitbox.width &&
-            playerBox.y >= 160 &&
-            playerBox.y <= 300,
+            playerBox.x >= gameWidth - hitbox.width &&
+            playerBox.y + playerBox.height > gameHeight * area3RightWallConfig.topOpeningStart &&
+            playerBox.y < gameHeight * (
+                area3RightWallConfig.topOpeningStart +
+                area3RightWallConfig.topOpeningHeight
+            ),
         toRoom: 4
     },
     {
-        room: 3,
+    room: 3,
         condition: playerBox =>
-            playerBox.x >= window.innerWidth - hitbox.width &&
-            playerBox.y >= 450,
+            playerBox.x >= gameWidth - hitbox.width &&
+            playerBox.y + playerBox.height > gameHeight * area3RightWallConfig.bottomOpeningStart &&
+            playerBox.y < gameHeight * (
+                area3RightWallConfig.bottomOpeningStart +
+                area3RightWallConfig.bottomOpeningHeight
+            ),
         toRoom: 5
     },
     {
@@ -650,12 +662,12 @@ const roomExitRules = [
         condition: playerBox => 
             playerBox.x + playerBox.width > downExitArea.x &&
             playerBox.x < downExitArea.x + downExitArea.width &&
-            playerBox.y >= window.innerHeight - hitbox.height,
+            playerBox.y >= gameHeight - hitbox.height,
         toRoom: 6
     },
     {
         room: 2,
-        condition: playerBox => playerBox.x < 0 && playerBox.y > 250 && playerBox.y < window.innerHeight - 250,
+        condition: playerBox => playerBox.x < 0 && playerBox.y > 250 && playerBox.y < gameHeight - 250,
         toRoom: 1,
         apply: function(){
             nextSpawn = "door";
@@ -663,12 +675,12 @@ const roomExitRules = [
     },
     {
         room: 3,
-        condition: playerBox => playerBox.x < 0 && playerBox.y > 250 && playerBox.y < window.innerHeight - 250,
+        condition: playerBox => playerBox.x < 0 && playerBox.y > 250 && playerBox.y < gameHeight - 250,
         toRoom: 1
     },
     {
         room: 4,
-        condition: playerBox => playerBox.x < 0 && playerBox.y > 250 && playerBox.y < window.innerHeight - 250,
+        condition: playerBox => playerBox.x < 0 && playerBox.y > 250 && playerBox.y < gameHeight - 250,
         toRoom: 3
     },
     {
@@ -676,7 +688,7 @@ const roomExitRules = [
         condition: playerBox =>
             playerBox.x < 0 &&
             playerBox.y > 250 &&
-            playerBox.y < window.innerHeight - 250,
+            playerBox.y < gameHeight - 250,
         toRoom: 3,
         apply: function(){
             spawnFromRight = true;
@@ -706,7 +718,7 @@ const collisionConfig = {
     2: [
         { boxes: area2Walls },
         { boxes: [floor], requiredElement: floorElement },
-        { custom: playerBox => playerBox.x + playerBox.width > window.innerWidth - 40 }
+        { custom: playerBox => playerBox.x + playerBox.width > gameWidth - 40 }
     ],
     3: [
         { boxes: area3Walls, requiredElement: area3LeftElement },
@@ -1028,7 +1040,7 @@ function gameLoop(currentTime){
         fallingPlatformElement.style.top = fallingPlatformY + "px";
         }
 
-        if(fallingPlatformY > window.innerHeight){
+        if(fallingPlatformY > gameHeight){
         fallingPlatformElement.style.display = "none";
         fallingPlatformFalling = false;
         }
@@ -1074,13 +1086,13 @@ function gameLoop(currentTime){
     }
 
     //impede o player de sair pela direita
-    if(x > window.innerWidth - hitbox.width){
-        x = window.innerWidth - hitbox.width;
+    if(x > gameWidth - hitbox.width){
+        x = gameWidth - hitbox.width;
     }
 
     //impede o player de sair por baixo
-    if(y > window.innerHeight - hitbox.height){
-        y = window.innerHeight - hitbox.height;
+    if(y > gameHeight - hitbox.height){
+        y = gameHeight - hitbox.height;
         velocityY = 0;
         isGrounded = true;
     }
@@ -1169,23 +1181,23 @@ function loadRoom(){
 
     if(currentRoom === 1 && nextSpawn === "door"){
 
-        x = (window.innerWidth / 2) - 10;
-        y = window.innerHeight - 40 - hitbox.height;
+        x = (gameWidth / 2) - 10;
+        y = gameHeight - 40 - hitbox.height;
 
         nextSpawn = "default";
 
     }else if(currentRoom === 3 && spawnFromRight){
 
-        x = window.innerWidth - 120;
-        y = window.innerHeight * 0.65;
+        x = gameWidth - 120;
+        y = gameHeight * 0.65;
 
         spawnFromRight = false;
 
     }
     else if(currentRoom === 5 && nextSpawn === "fromHole"){
 
-        x = (window.innerWidth * 0.50) - 10;
-        y = window.innerHeight - 120;
+        x = (gameWidth * 0.50) - 10;
+        y = gameHeight - 120;
 
         nextSpawn = "default";
     }else{

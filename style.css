@@ -1,11 +1,13 @@
 header{
     text-align: left;
 }
+
 body{
     margin: 0;
     background-color: #0b1020;
-    text-align: center;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
 }
 
 .version{
@@ -69,7 +71,13 @@ h1{
     font-size: clamp(24px, 3vw, 42px);
 }
 
-#game-area{}
+#game-area{
+    width: 1600px;
+    height: 900px;
+    position: relative;
+    overflow: hidden;
+    background-color: #0b1020;
+}
 
 #player{
     width: 20px;
@@ -82,7 +90,7 @@ h1{
 /*paredes*/
 #wall-left{
     width: 40px;
-    height: 100vh;
+    height: 100%;
     background-color: white;
     position: absolute;
     left: 0;
@@ -183,7 +191,7 @@ h1{
 
 #area3-wall-right-top{
     width: 40px;
-    height: 27vh;
+    height: 27%;
     background-color: white;
     position: absolute;
     right: 0;
@@ -193,17 +201,17 @@ h1{
 
 #area3-wall-right-middle{
     width: 40px;
-    height: 20vh;
+    height: 20%;
     background-color: white;
     position: absolute;
     right: 0;
-    top: 42vh;
+    top: 42%;
     display: none;
 }
 
 #area3-wall-right-bottom{
     width: 40px;
-    height: 32vh;
+    height: 32%;
     background-color: white;
     position: absolute;
     right: 0;
@@ -254,7 +262,7 @@ h1{
 #area5-wall-right{
     display: none;
     width: 40px;
-    height: 100vh;
+    height: 100%;
     background-color: white;
     position: absolute;
     right: 0;
@@ -264,7 +272,7 @@ h1{
 #area6-wall-left{
     display: none;
     width: 40px;
-    height: 100vh;
+    height: 100%;
     background-color: white;
     position: absolute;
     left: 0;
@@ -274,7 +282,7 @@ h1{
 #area6-wall-right{
     display: none;
     width: 40px;
-    height: 100vh;
+    height: 100%;
     background-color: white;
     position: absolute;
     right: 0;
@@ -283,7 +291,7 @@ h1{
 
 /*chão padrao da mesma altura em todas as telas que tem essa div*/
 #floor{
-    width: 100vw;
+    width: 100%;
     height: 40px;
     background-color: white;
     position: absolute;
@@ -358,7 +366,7 @@ h1{
 /*plataformas sala 6*/
 #area6-ceiling-left{
     display: none;
-    width: 45vw;
+    width: 45%;
     height: 40px;
     background-color: white;
     position: absolute;
@@ -368,7 +376,7 @@ h1{
 
 #area6-ceiling-right{
     display: none;
-    width: 45vw;
+    width: 45%;
     height: 40px;
     background-color: white;
     position: absolute;
@@ -381,35 +389,35 @@ h1{
 #area6-platform-3,
 #area6-platform-4{
     display: none;
-    width: 12vw;
-    height: 2.5vh;
+    width: 12%;
+    height: 2.5%;
     background-color: white;
     position: absolute;
 }
 
 #area6-platform-1{
-    left: 15vw;
-    top: 75vh;
+    left: 15%;
+    top: 75%;
 }
 
 #area6-platform-2{
-    left: 35vw;
-    top: 60vh;
+    left: 35%;
+    top: 60%;
 }
 
 #area6-platform-3{
-    left: 55vw;
-    top: 45vh;
+    left: 55%;
+    top: 45%;
 }
 
 #area6-platform-4{
-    left: 43vw;
-    top: 25vh;
+    left: 43%;
+    top: 25%;
 }
 
 #floor-left{
     display: none;
-    width: 45vw;
+    width: 45%;
     height: 40px;
     background-color: white;
     position: absolute;
@@ -419,7 +427,7 @@ h1{
 
 #floor-right{
     display: none;
-    width: 45vw;
+    width: 45%;
     height: 40px;
     background-color: white;
     position: absolute;
@@ -544,7 +552,7 @@ h1{
 #room2-wall-right{
     display: none;
     width: 40px;
-    height: 100vh;
+    height: 100%;
     background-color: white;
     position: absolute;
     right: 0;
