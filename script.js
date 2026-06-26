@@ -7,6 +7,19 @@ const gameArea = document.getElementById("game-area");
 const gameWidth = gameArea.offsetWidth;
 const gameHeight = gameArea.offsetHeight;
 
+function resizeGame(){
+    const availableWidth = document.documentElement.clientWidth;
+    const availableHeight = document.documentElement.clientHeight;
+
+    const scale = Math.min(
+        availableWidth / gameWidth,
+        availableHeight / gameHeight
+    ) * 0.96;
+
+    gameArea.style.transform =
+        `translate(-50%, -50%) scale(${scale})`;
+}
+
 const doorElement = document.getElementById("door");
 const wallLeftElement = document.getElementById("wall-left");
 const exitAreaElement = document.getElementById("wall-right-top");
@@ -59,6 +72,14 @@ const damagePopupElement = document.getElementById("damage-popup");
 
 //corrente de vento
 const windZoneElement = document.getElementById("wind-zone");
+
+//teto
+const ceiling = {
+    x: 0,
+    y: -40,
+    width: gameWidth,
+    height: 40
+};
 
 //posição inicial do player (centro da tela)
 let x = (gameWidth / 2) - 10;
@@ -710,17 +731,20 @@ const roomExitRules = [
 //colisões de cada sala
 const collisionConfig = {
     1: [
+        { boxes: [ceiling] },
         { boxes: walls, requiredElement: wallLeftElement },
         { boxes: [floor], requiredElement: floorElement, active: () => currentRoom !== 5 },
         { boxes: [floorLeft], requiredElement: floorLeftElement },
         { boxes: [floorRight], requiredElement: floorRightElement }
     ],
     2: [
+        { boxes: [ceiling] },
         { boxes: area2Walls },
         { boxes: [floor], requiredElement: floorElement },
         { custom: playerBox => playerBox.x + playerBox.width > gameWidth - 40 }
     ],
     3: [
+        { boxes: [ceiling] },
         { boxes: area3Walls, requiredElement: area3LeftElement },
         { boxes: area3RightWalls, requiredElement: area3RightElement },
         { boxes: [floor], requiredElement: floorElement, active: () => currentRoom !== 5 },
@@ -729,6 +753,7 @@ const collisionConfig = {
         { boxes: platforms, requiredElement: platform1Element }
     ],
     4: [
+        { boxes: [ceiling] },
         { boxes: area4Walls, requiredElement: area4LeftElement },
         { boxes: [floor], requiredElement: floorElement, active: () => currentRoom !== 5 },
         { boxes: [floorLeft], requiredElement: floorLeftElement },
@@ -736,6 +761,7 @@ const collisionConfig = {
         { boxes: [fallingPlatform], requiredElement: fallingPlatformElement }
     ],
     5: [
+        { boxes: [ceiling] },
         { boxes: area5Walls, requiredElement: area5LeftElement },
         { boxes: [area5RightWall], requiredElement: area5RightElement },
         { boxes: [floorLeft], requiredElement: floorLeftElement },
@@ -1081,8 +1107,11 @@ function gameLoop(currentTime){
     }
 
     //impede o player de sair por cima
-    if(y < 0){
-        y = 0;
+    const topLimit = 120;
+
+    if(y < topLimit){
+        y = topLimit;
+        velocityY = 0;
     }
 
     //impede o player de sair pela direita
@@ -1094,7 +1123,7 @@ function gameLoop(currentTime){
     if(y > gameHeight - hitbox.height){
         y = gameHeight - hitbox.height;
         velocityY = 0;
-        isGrounded = true;
+        isGrounded = true; 92596
     }
 
     //cria a hitbox atual do player
