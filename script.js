@@ -14,7 +14,7 @@ function resizeGame(){
     const scale = Math.min(
         availableWidth / gameWidth,
         availableHeight / gameHeight
-    ) * 0.96;
+    );
 
     gameArea.style.transform =
         `translate(-50%, -50%) scale(${scale})`;
@@ -73,12 +73,11 @@ const damagePopupElement = document.getElementById("damage-popup");
 //corrente de vento
 const windZoneElement = document.getElementById("wind-zone");
 
-//teto
-const ceiling = {
-    x: 0,
-    y: -40,
-    width: gameWidth,
-    height: 40
+const roomBounds = {
+    left: 0,
+    top: 0,
+    right: gameWidth,
+    bottom: gameHeight
 };
 
 //posição inicial do player (centro da tela)
@@ -731,20 +730,17 @@ const roomExitRules = [
 //colisões de cada sala
 const collisionConfig = {
     1: [
-        { boxes: [ceiling] },
         { boxes: walls, requiredElement: wallLeftElement },
         { boxes: [floor], requiredElement: floorElement, active: () => currentRoom !== 5 },
         { boxes: [floorLeft], requiredElement: floorLeftElement },
         { boxes: [floorRight], requiredElement: floorRightElement }
     ],
     2: [
-        { boxes: [ceiling] },
         { boxes: area2Walls },
         { boxes: [floor], requiredElement: floorElement },
         { custom: playerBox => playerBox.x + playerBox.width > gameWidth - 40 }
     ],
     3: [
-        { boxes: [ceiling] },
         { boxes: area3Walls, requiredElement: area3LeftElement },
         { boxes: area3RightWalls, requiredElement: area3RightElement },
         { boxes: [floor], requiredElement: floorElement, active: () => currentRoom !== 5 },
@@ -753,7 +749,6 @@ const collisionConfig = {
         { boxes: platforms, requiredElement: platform1Element }
     ],
     4: [
-        { boxes: [ceiling] },
         { boxes: area4Walls, requiredElement: area4LeftElement },
         { boxes: [floor], requiredElement: floorElement, active: () => currentRoom !== 5 },
         { boxes: [floorLeft], requiredElement: floorLeftElement },
@@ -761,7 +756,6 @@ const collisionConfig = {
         { boxes: [fallingPlatform], requiredElement: fallingPlatformElement }
     ],
     5: [
-        { boxes: [ceiling] },
         { boxes: area5Walls, requiredElement: area5LeftElement },
         { boxes: [area5RightWall], requiredElement: area5RightElement },
         { boxes: [floorLeft], requiredElement: floorLeftElement },
@@ -1093,7 +1087,7 @@ function gameLoop(currentTime){
     }
 
     //impede o player de sair pela esquerda
-    if(x < 0){
+    if(x < roomBounds.left){
         const playerBox = createPlayerBox();
 
         if(checkRoomExit(playerBox)){
@@ -1103,27 +1097,25 @@ function gameLoop(currentTime){
             return;
         }
 
-        x = 0;
+        x = roomBounds.left;
     }
 
     //impede o player de sair por cima
-    const topLimit = 120;
-
-    if(y < topLimit){
-        y = topLimit;
+    if(y < roomBounds.top){
+        y = roomBounds.top;
         velocityY = 0;
     }
 
     //impede o player de sair pela direita
-    if(x > gameWidth - hitbox.width){
-        x = gameWidth - hitbox.width;
+    if(x > roomBounds.right - hitbox.width){
+        x = roomBounds.right - hitbox.width;
     }
 
     //impede o player de sair por baixo
-    if(y > gameHeight - hitbox.height){
-        y = gameHeight - hitbox.height;
+    if(y > roomBounds.bottom - hitbox.height){
+        y = roomBounds.bottom - hitbox.height;
         velocityY = 0;
-        isGrounded = true; 92596
+        isGrounded = true;
     }
 
     //cria a hitbox atual do player
@@ -1225,8 +1217,10 @@ function loadRoom(){
     }
     else if(currentRoom === 5 && nextSpawn === "fromHole"){
 
-        x = (gameWidth * 0.50) - 10;
-        y = gameHeight - 120;
+        x = downExitArea.x - hitbox.width - 20;
+        y = floor.y - hitbox.height;
+        velocityY = 0;
+        isGrounded = true;
 
         nextSpawn = "default";
     }else{
@@ -1302,6 +1296,9 @@ function loadRoom(){
         fallingPlatformElement.style.display = "block";
     }
 }
+
+resizeGame();
+window.addEventListener("resize", resizeGame);
 
 //inicia o loop do jogo
 loadRoom();

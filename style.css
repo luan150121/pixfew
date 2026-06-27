@@ -101,7 +101,7 @@ h1{
 /*paredes*/
 #wall-left{
     width: 40px;
-    height: 100%;
+    height: 900px;
     background-color: white;
     position: absolute;
     left: 0;
@@ -131,7 +131,7 @@ h1{
     height: 90px;
     background-color: purple;
     position: absolute;
-    left: calc(50vw - 30px);
+    left: calc(50% - 30px);
     bottom: 40px;
     z-index: 1;
     border-radius: 20px 20px 0px 0px; /*ordem: top-left, top-right, bottom-right, bottom-left*/
@@ -141,8 +141,9 @@ h1{
 #interaction-popup{
     display: none;
     position: absolute;
-    left: calc(50vw - 35px);
+    left: 50%;
     bottom: 135px;
+    transform: translateX(-50%);
     color: white;
     background-color: rgba(0, 0, 0, 0.6);
     padding: 8px 12px;
@@ -273,7 +274,7 @@ h1{
 #area5-wall-right{
     display: none;
     width: 40px;
-    height: 100%;
+    height: 900px;
     background-color: white;
     position: absolute;
     right: 0;
@@ -283,7 +284,7 @@ h1{
 #area6-wall-left{
     display: none;
     width: 40px;
-    height: 100%;
+    height: 900px;
     background-color: white;
     position: absolute;
     left: 0;
@@ -293,7 +294,7 @@ h1{
 #area6-wall-right{
     display: none;
     width: 40px;
-    height: 100%;
+    height: 900px;
     background-color: white;
     position: absolute;
     right: 0;
@@ -302,7 +303,7 @@ h1{
 
 /*chão padrao da mesma altura em todas as telas que tem essa div*/
 #floor{
-    width: 100%;
+    width: 1600px;
     height: 40px;
     background-color: white;
     position: absolute;
@@ -565,7 +566,7 @@ h1{
 #room2-wall-right{
     display: none;
     width: 40px;
-    height: 100%;
+    height: 900px;
     background-color: white;
     position: absolute;
     right: 0;
