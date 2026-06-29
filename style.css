@@ -2,14 +2,18 @@ header{
     text-align: left;
 }
 
+html,
 body{
     margin: 0;
+    width: 100%;
+    height: 100%;
     background-color: #0b1020;
     overflow: hidden;
-    display: flex;
-    justify-content: center;
 }
 
+body{
+    display: block;
+}
 .version{
     font-family: "JetBrains Mono", monospace;
     font-size: small; /*muda o tamanho da versao*/
@@ -72,10 +76,11 @@ h1{
 }
 
 #game-wrapper{
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
-    position: relative;
+    position: fixed;
+    inset: 0;
     background-color: #0b1020;
 }
 

@@ -11,13 +11,11 @@ function resizeGame(){
     const availableWidth = document.documentElement.clientWidth;
     const availableHeight = document.documentElement.clientHeight;
 
-    const scale = Math.min(
-        availableWidth / gameWidth,
-        availableHeight / gameHeight
-    );
+    const scaleX = availableWidth / gameWidth;
+    const scaleY = availableHeight / gameHeight;
 
     gameArea.style.transform =
-        `translate(-50%, -50%) scale(${scale})`;
+        `translate(-50%, -50%) scale(${scaleX}, ${scaleY})`;
 }
 
 const doorElement = document.getElementById("door");
