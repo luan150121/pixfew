@@ -1,16 +1,68 @@
 header{
     text-align: left;
 }
+
+html,
 body{
+    margin: 0;
+    width: 100%;
+    height: 100%;
     background-color: #0b1020;
-    text-align: center;
     overflow: hidden;
+}
+
+body{
+    display: block;
+}
+
+.menu-page{
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 64px 24px 48px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.menu-page header{
+    position: fixed;
+    left: 18px;
+    top: 12px;
+}
+
+.menu-page h1{
+    margin: 0;
+}
+
+.intro-page h1{
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 40px;
+}
+
+.development-warning{
+    position: absolute;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    font-size: 34px;
+    font-weight: 600;
+    color: #ffffffcc;
+    text-align: center;
+
+    letter-spacing: 2px;
 }
 
 .version{
     font-family: "JetBrains Mono", monospace;
     font-size: small; /*muda o tamanho da versao*/
     color: blueviolet;
+    margin: 0;
 }
 
 h1{
@@ -20,10 +72,9 @@ h1{
 
 .logo{
     font-family: "Cinzel", serif; /*fonte pro titulo*/
-    font-size: 70px;
+    font-size: clamp(52px, 9vw, 92px);
     color: #4da6ff;
 }
-
 
 /*botões*/
 .button{
@@ -50,14 +101,14 @@ h1{
     flex-direction: column;
     align-items: center; /*alinhamento*/
     gap: 30px; /*cria espaço entre os botoes, assim nao precisa do <br>*/
-    margin-top: 25vh; /*empurra os botões pra baixo*/
+    margin-top: 56px;
     font-size: clamp(24px, 3vw, 42px);
 }
 
 /*botões config*/
 .button-config{
     background-color: transparent;
-    width: 300px;
+    width: min(300px, 80vw);
 }
 
 .config-buttons{
@@ -65,11 +116,33 @@ h1{
     flex-direction: column;
     align-items: center;
     gap: 30px;
-    margin-top: 25vh;
+    margin-top: 56px;
     font-size: clamp(24px, 3vw, 42px);
 }
 
-#game-area{}
+.buttons{
+    margin-top: 40px;
+}
+
+#game-wrapper{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: fixed;
+    inset: 0;
+    background-color: #0b1020;
+}
+
+#game-area{
+    width: 1600px;
+    height: 900px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    overflow: hidden;
+    background-color: #0b1020;
+    transform-origin: center center;
+}
 
 #player{
     width: 20px;
@@ -82,7 +155,7 @@ h1{
 /*paredes*/
 #wall-left{
     width: 40px;
-    height: 100vh;
+    height: 900px;
     background-color: white;
     position: absolute;
     left: 0;
@@ -112,7 +185,7 @@ h1{
     height: 90px;
     background-color: purple;
     position: absolute;
-    left: calc(50vw - 30px);
+    left: calc(50% - 30px);
     bottom: 40px;
     z-index: 1;
     border-radius: 20px 20px 0px 0px; /*ordem: top-left, top-right, bottom-right, bottom-left*/
@@ -122,8 +195,9 @@ h1{
 #interaction-popup{
     display: none;
     position: absolute;
-    left: calc(50vw - 35px);
+    left: 50%;
     bottom: 135px;
+    transform: translateX(-50%);
     color: white;
     background-color: rgba(0, 0, 0, 0.6);
     padding: 8px 12px;
@@ -141,6 +215,29 @@ h1{
     top: 300px;
 
     display: none;
+}
+
+#memory-pedestal{
+    width: 80px;
+    height: 80px;
+    background-color: #8f8f8f;
+    position: absolute;
+    left: calc(50% - 40px);
+    bottom: 40px;
+    display: none;
+}
+
+#memory-unlocked-popup{
+    display: none;
+    position: absolute;
+    left: 50%;
+    bottom: 145px;
+    transform: translateX(-50%);
+    color: white;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 8px 12px;
+    border-radius: 8px;
+    z-index: 3;
 }
 
 #area2-wall-left-top{
@@ -183,7 +280,7 @@ h1{
 
 #area3-wall-right-top{
     width: 40px;
-    height: 160px;
+    height: 27%;
     background-color: white;
     position: absolute;
     right: 0;
@@ -193,17 +290,17 @@ h1{
 
 #area3-wall-right-middle{
     width: 40px;
-    height: 180px;
+    height: 20%;
     background-color: white;
     position: absolute;
     right: 0;
-    top: 300px;
+    top: 42%;
     display: none;
 }
 
 #area3-wall-right-bottom{
     width: 40px;
-    height: 120px;
+    height: 32%;
     background-color: white;
     position: absolute;
     right: 0;
@@ -251,9 +348,39 @@ h1{
     bottom: 0;
 }
 
+#area5-wall-right{
+    display: none;
+    width: 40px;
+    height: 900px;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+#area6-wall-left{
+    display: none;
+    width: 40px;
+    height: 900px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#area6-wall-right{
+    display: none;
+    width: 40px;
+    height: 900px;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
 /*chão padrao da mesma altura em todas as telas que tem essa div*/
 #floor{
-    width: 100vw;
+    width: 1600px;
     height: 40px;
     background-color: white;
     position: absolute;
@@ -325,9 +452,61 @@ h1{
     transform: rotate(-20deg);
 }
 
+/*plataformas sala 6*/
+#area6-ceiling-left{
+    display: none;
+    width: 45%;
+    height: 40px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#area6-ceiling-right{
+    display: none;
+    width: 45%;
+    height: 40px;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+#area6-platform-1,
+#area6-platform-2,
+#area6-platform-3,
+#area6-platform-4{
+    display: none;
+    width: 12%;
+    height: 2.5%;
+    background-color: white;
+    position: absolute;
+}
+
+#area6-platform-1{
+    left: 15%;
+    top: 75%;
+}
+
+#area6-platform-2{
+    left: 35%;
+    top: 60%;
+}
+
+#area6-platform-3{
+    left: 55%;
+    top: 45%;
+}
+
+#area6-platform-4{
+    left: 43%;
+    top: 25%;
+}
+
 #floor-left{
     display: none;
-    width: 45vw;
+    width: 45%;
     height: 40px;
     background-color: white;
     position: absolute;
@@ -337,7 +516,7 @@ h1{
 
 #floor-right{
     display: none;
-    width: 45vw;
+    width: 45%;
     height: 40px;
     background-color: white;
     position: absolute;
@@ -359,19 +538,16 @@ h1{
 
 #memory-popup{
     display: none;
-    display: none;
     position: absolute;
-    top: 40px;
+    top: 120px;
     right: 20px;
-
+    left: 50%;
+    transform: translateX(-50%);
     color: white;
     background-color: rgba(0, 0, 0, 0.6);
-
     padding: 10px 14px;
     border-radius: 8px;
-
     z-index: 5;
-
     opacity: 0;
 }
 
@@ -411,17 +587,13 @@ h1{
 
 #damage-popup{
     display: none;
-    display: none;
     position: absolute;
     top: 80px;
     right: 20px;
-
     color: white;
     background-color: rgba(120, 0, 0, 0.7);
-
     padding: 10px 14px;
     border-radius: 8px;
-
     z-index: 5;
 }
 
@@ -471,7 +643,7 @@ h1{
 #room2-wall-right{
     display: none;
     width: 40px;
-    height: 100vh;
+    height: 900px;
     background-color: white;
     position: absolute;
     right: 0;

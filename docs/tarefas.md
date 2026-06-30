@@ -1,9 +1,11 @@
 - [] criar inventario
 - [] criar sistema de módulos
-- [] corrigir pulo
+- [x] corrigir pulo
 - [x] configurar github
 - [] criar mapa
 - [] criar backend
 - [] criar sistema de vida
 - [] criar sistema de combate
 - [] criar sistema de dano
+- [x] arrumar salas ja existentes
+- [] criar novas salas pro mapa completo
