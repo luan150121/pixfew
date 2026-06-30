@@ -26,6 +26,10 @@ let lastTime = 0;
 let currentRoom = 1;
 let nextSpawn = "default";
 let spawnFromRight = false;
+let isEmergingFromHole = false;
+let emergeTargetY = 0;
+let emergeSafeX = 0;
+let emergeSpeed = 18;
 
 const spawnPoint = localStorage.getItem("spawnPoint");
 

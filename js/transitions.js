@@ -1,24 +1,3 @@
-const roomTransitions = [
-    {
-        room: 4,
-        area: area4LeftExitArea,
-        requiredElement: area4LeftElement,
-        toRoom: 3,
-        apply: function(){
-            spawnFromRight = true;
-        }
-    },
-    {
-        room: 5,
-        area: area5LeftExitArea,
-        requiredElement: area5LeftElement,
-        toRoom: 3,
-        apply: function(){
-            spawnFromRight = true;
-        }
-    }
-];
-
 //configurações de saída de cada sala
 const roomExitRules = [
     {
@@ -67,12 +46,18 @@ const roomExitRules = [
     {
         room: 3,
         condition: playerBox => playerBox.x < 0 && playerBox.y > 250 && playerBox.y < gameHeight - 250,
-        toRoom: 1
+        toRoom: 1,
+        apply: function(){
+            nextSpawn = "fromRight";
+        }
     },
     {
         room: 4,
         condition: playerBox => playerBox.x < 0 && playerBox.y > 250 && playerBox.y < gameHeight - 250,
-        toRoom: 3
+        toRoom: 3,
+        apply: function(){
+            spawnFromRight = true;
+        }
     },
     {
         room: 5,
@@ -97,28 +82,6 @@ const roomExitRules = [
         }
     },
 ];
-
-
-function checkRoomTransition(playerBox){
-    const transition = roomTransitions.find(item =>
-        item.room === currentRoom &&
-        item.requiredElement &&
-        checkColision(playerBox, item.area)
-    );
-
-    if(!transition){
-        return false;
-    }
-
-    currentRoom = transition.toRoom;
-
-    if(typeof transition.apply === "function"){
-        transition.apply();
-    }
-
-    loadRoom();
-    return true;
-}
 
 function checkRoomExit(playerBox){
     const exitRule = roomExitRules.find(item =>

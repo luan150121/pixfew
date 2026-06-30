@@ -100,6 +100,13 @@ function loadRoom(){
 
         nextSpawn = "default";
 
+    }else if(currentRoom === 1 && nextSpawn === "fromRight"){
+
+        x = gameWidth - 120;
+        y = gameHeight * 0.65;
+
+        nextSpawn = "default";
+
     }else if(currentRoom === 3 && spawnFromRight){
 
         x = gameWidth - 120;
@@ -111,9 +118,12 @@ function loadRoom(){
     else if(currentRoom === 5 && nextSpawn === "fromHole"){
 
         x = downExitArea.x - hitbox.width - 20;
-        y = floor.y - hitbox.height;
+        emergeTargetY = floor.y - hitbox.height;
+        y = emergeTargetY + 18;
+
         velocityY = 0;
-        isGrounded = true;
+        isGrounded = false;
+        isEmergingFromHole = true;
 
         nextSpawn = "default";
     }else{

@@ -625,27 +625,6 @@ const windZone = {
     height: 260
 };
 
-const roomTransitions = [
-    {
-        room: 4,
-        area: area4LeftExitArea,
-        requiredElement: area4LeftElement,
-        toRoom: 3,
-        apply: function(){
-            spawnFromRight = true;
-        }
-    },
-    {
-        room: 5,
-        area: area5LeftExitArea,
-        requiredElement: area5LeftElement,
-        toRoom: 3,
-        apply: function(){
-            spawnFromRight = true;
-        }
-    }
-];
-
 //configurações de saída de cada sala
 const roomExitRules = [
     {
@@ -782,28 +761,6 @@ function checkColision(playerBox, wallBox){
            playerBox.x + playerBox.width > wallBox.x &&
            playerBox.y < wallBox.y + wallBox.height &&
            playerBox.y + playerBox.height > wallBox.y;
-}
-
-//verifica colisão com as paredes da área atual
-function checkRoomTransition(playerBox){
-    const transition = roomTransitions.find(item =>
-        item.room === currentRoom &&
-        item.requiredElement &&
-        checkColision(playerBox, item.area)
-    );
-
-    if(!transition){
-        return false;
-    }
-
-    currentRoom = transition.toRoom;
-
-    if(typeof transition.apply === "function"){
-        transition.apply();
-    }
-
-    loadRoom();
-    return true;
 }
 
 function getElementBox(element){

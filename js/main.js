@@ -11,6 +11,22 @@ function gameLoop(currentTime){
         deltaTime = 2;
     }
 
+    if(isEmergingFromHole){
+        y -= emergeSpeed * deltaTime;
+
+        if(y <= emergeTargetY){
+            y = emergeTargetY;
+            velocityY = 0;
+            isGrounded = true;
+            isEmergingFromHole = false;
+        }
+
+        player.style.left = x + "px";
+        player.style.top = y + "px";
+        requestAnimationFrame(gameLoop);
+        return;
+    }
+
     if(isDashing){
         x += facingDirection * dashSpeed * deltaTime;
 
