@@ -189,4 +189,6 @@ function loadRoom(){
         fallingPlatformElement.style.top = fallingPlatformY + "px";
         fallingPlatformElement.style.display = "block";
     }
+
+    updateMemoryFragmentVisibility();
 }

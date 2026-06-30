@@ -209,25 +209,7 @@ function gameLoop(currentTime){
 
     //fragmento de memória(popup)
     if(currentRoom === 6 && memoryFragmentElement && checkColision(playerBox, memoryFragment)){
-        memoryFragmentElement.style.display = "none";
-
-        if(memoryPopupElement){
-            memoryPopupElement.style.display = "block";
-            memoryPopupElement.style.animation = "none";
-
-            setTimeout(function(){
-
-                memoryPopupElement.style.animation =
-                    "popupMemory 2s forwards";
-
-            }, 10);
-
-            setTimeout(function(){
-
-                memoryPopupElement.style.display = "none";
-
-            }, 2000);
-        }
+        collectMemoryFragment();
     }
 
     //atualiza a posição do player na tela
