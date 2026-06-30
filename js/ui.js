@@ -47,6 +47,8 @@ const room2WallTopElement = document.getElementById("room2-wall-left-top");
 const room2WallBottomElement = document.getElementById("room2-wall-left-bottom");
 const room2WallRightElement = document.getElementById("room2-wall-right");
 const area2BlockElement = document.getElementById("area2-block");
+const memoryPedestalElement = document.getElementById("memory-pedestal");
+const memoryUnlockedPopupElement = document.getElementById("memory-unlocked-popup");
 
 const floorElement = document.getElementById("floor");
 const floorLeftElement = document.getElementById("floor-left");

@@ -168,6 +168,29 @@ h1{
     display: none;
 }
 
+#memory-pedestal{
+    width: 80px;
+    height: 80px;
+    background-color: #8f8f8f;
+    position: absolute;
+    left: calc(50% - 40px);
+    bottom: 40px;
+    display: none;
+}
+
+#memory-unlocked-popup{
+    display: none;
+    position: absolute;
+    left: 50%;
+    bottom: 145px;
+    transform: translateX(-50%);
+    color: white;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 8px 12px;
+    border-radius: 8px;
+    z-index: 3;
+}
+
 #area2-wall-left-top{
     width: 40px;
     height: 250px;

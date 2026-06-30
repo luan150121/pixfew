@@ -212,6 +212,8 @@ function gameLoop(currentTime){
         collectMemoryFragment();
     }
 
+    checkMemoryPedestalDelivery(playerBox);
+
     //atualiza a posição do player na tela
     player.style.left = x + "px";
     player.style.top = y + "px";

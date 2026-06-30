@@ -12,6 +12,7 @@ const rooms = {
         showDoor: false,
         elements: [
             area2BlockElement,
+            memoryPedestalElement,
             room2WallTopElement,
             room2WallBottomElement,
             room2WallRightElement
