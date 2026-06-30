@@ -9,13 +9,13 @@ const memoryPedestal = {
 };
 
 function updateMemoryFragmentVisibility(){
-    if(playerHasMemoryFragment && memoryFragmentElement){
+    if((playerHasMemoryFragment || memoryFragmentDelivered) && memoryFragmentElement){
         memoryFragmentElement.style.display = "none";
     }
 }
 
 function collectMemoryFragment(){
-    if(playerHasMemoryFragment){
+    if(playerHasMemoryFragment || memoryFragmentDelivered){
         return;
     }
 

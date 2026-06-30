@@ -71,9 +71,7 @@ const rooms = {
         showBlock: false,
         elements: [
             memoryFragmentElement,
-            memoryPopupElement,
             damageObstacleElement,
-            damagePopupElement,
             area6WallLeftElement,
             area6WallRightElement,
             area6CeilingLeftElement,
@@ -179,6 +177,14 @@ function loadRoom(){
                 element.style.display = "block";
             }
         });
+    }
+
+    if(memoryPopupElement){
+        memoryPopupElement.style.display = "none";
+    }
+
+    if(damagePopupElement){
+        damagePopupElement.style.display = "none";
     }
 
     if(currentRoom === 4 && fallingPlatformElement){
