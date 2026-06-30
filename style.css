@@ -14,10 +14,55 @@ body{
 body{
     display: block;
 }
+
+.menu-page{
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 64px 24px 48px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.menu-page header{
+    position: fixed;
+    left: 18px;
+    top: 12px;
+}
+
+.menu-page h1{
+    margin: 0;
+}
+
+.intro-page h1{
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 40px;
+}
+
+.development-warning{
+    position: absolute;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    font-size: 34px;
+    font-weight: 600;
+    color: #ffffffcc;
+    text-align: center;
+
+    letter-spacing: 2px;
+}
+
 .version{
     font-family: "JetBrains Mono", monospace;
     font-size: small; /*muda o tamanho da versao*/
     color: blueviolet;
+    margin: 0;
 }
 
 h1{
@@ -27,7 +72,7 @@ h1{
 
 .logo{
     font-family: "Cinzel", serif; /*fonte pro titulo*/
-    font-size: 70px;
+    font-size: clamp(52px, 9vw, 92px);
     color: #4da6ff;
 }
 
@@ -56,14 +101,14 @@ h1{
     flex-direction: column;
     align-items: center; /*alinhamento*/
     gap: 30px; /*cria espaço entre os botoes, assim nao precisa do <br>*/
-    margin-top: 25vh; /*empurra os botões pra baixo*/
+    margin-top: 56px;
     font-size: clamp(24px, 3vw, 42px);
 }
 
 /*botões config*/
 .button-config{
     background-color: transparent;
-    width: 300px;
+    width: min(300px, 80vw);
 }
 
 .config-buttons{
@@ -71,8 +116,12 @@ h1{
     flex-direction: column;
     align-items: center;
     gap: 30px;
-    margin-top: 25vh;
+    margin-top: 56px;
     font-size: clamp(24px, 3vw, 42px);
+}
+
+.buttons{
+    margin-top: 40px;
 }
 
 #game-wrapper{
